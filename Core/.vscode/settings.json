@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "rs485.h": "c",
+        "sensorparatable.h": "c",
+        "sensorapplogic.h": "c",
+        "main.h": "c",
+        "elevatorsignalmonitor.h": "c",
+        "nd06av1c_app.h": "c"
+    }
+}
