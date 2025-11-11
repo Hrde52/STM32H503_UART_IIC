@@ -24,6 +24,8 @@ extern uint8_t now_ClosingTimeLearning_Flg;
 extern uint8_t STOP_DistanceThresholdLearning_ReqFlg;  // PDAÕ£÷πæ‡¿Î—ßœ∞
 extern uint8_t  STOP_ClosingTimeLearningReqFlg;
 
+//extern uint8_t setResetParaFlg;
+
 uint16_t CalcCRC16(uint8_t *data, uint16_t len);
 
 void WriteU32LittleEndian(uint8_t *buf, uint32_t value);

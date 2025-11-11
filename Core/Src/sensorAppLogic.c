@@ -165,6 +165,7 @@ uint32_t nd06PixelAddCnt[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 uint32_t nd06StudyDep[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 uint32_t nd06AddCnt = 0;
 uint32_t dts6012AddCnt = 0;
+uint32_t nd06StudyDepEven = 0;
 void cargolift_DistanceThresholdLearning(void)
 {
     HAL_StatusTypeDef status = HAL_OK;
@@ -199,12 +200,11 @@ void cargolift_DistanceThresholdLearning(void)
         }
     }
 
-    /*����TOF*/
+    /*TOF*/
     if (nd06DistanceThresholdLearningSuccessFlg == 0)
     {
         if (nd06AddCnt < 10)
         {
-
             ret = ND06AV1C_GetDepthAndAmpData(&g_nd06av1c_device, (uint16_t *)nd06_data.amp, (uint16_t *)nd06_data.dep);
 
             if (ret == ND06AV1C_GET_DATA_SUCCESS)
@@ -277,14 +277,20 @@ void cargolift_DistanceThresholdLearning(void)
                     nd06StudyDep[i * 4 + j] = nd06StudyDep[i * 4 + j - 1];
                 }
             }
-
+						
+						for(uint8_t indexI = 0; indexI < 16;  indexI++)
+						{
+							nd06StudyDepEven += nd06StudyDep[indexI];
+						}
+						nd06StudyDepEven /= 16;
+						
             memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, nd06StudyDep, sizeof(nd06StudyDep));
             paraTable_Write();
             nd06DistanceThresholdLearningSuccessFlg = 1;
 
-            //			memset(nd06StudyDep,0,sizeof(nd06StudyDep));  //��ջ������ￄ1�71ￄ1�77
-            //			memset(nd06PixelAddCnt,0,sizeof(nd06PixelAddCnt));  //��ջ������ￄ1�71ￄ1�77
-            //			nd06AddCnt = 0;
+            memset(nd06StudyDep,0,sizeof(nd06StudyDep));  
+            memset(nd06PixelAddCnt,0,sizeof(nd06PixelAddCnt));  
+            nd06AddCnt = 0;
         }
     }
     if ((dts6012DistanceThresholdLearningSuccessFlg == 1) && (nd06DistanceThresholdLearningSuccessFlg == 1))
@@ -314,14 +320,11 @@ void ClosingTimeLearning()
     // 1. 等待门打开状态消失，记录起始时间
     if (!learningStarted && currentDoorState== STATE_CLOSING && pastDoorState == STATE_OPENED)
     {
-        //startTick = HAL_GetTick();
-				
         learningStarted = 1;
         pixelOccludedFlag = 0;
     }
 
     // 2. 只有在学习已开始时才继续
-//    if (learningStarted)
 		if (learningStarted)
     {
 			closeTimeCycle++;

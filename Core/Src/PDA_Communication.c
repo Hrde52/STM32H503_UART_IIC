@@ -454,9 +454,9 @@ void HandleHeartbeat(SensorProtocol *pkt)
 }
 
 
+uint8_t setResetParaFlg = 0;
 void HandleControl(SensorProtocol *pkt)
 {
-
     // PDA->SENSOR
     // data1
     uint8_t *m_data1 = pkt->data1;
@@ -468,7 +468,9 @@ void HandleControl(SensorProtocol *pkt)
     char str_sensorAddr[9] = {0};        // char *str_sensorAddr[13];
     uint8_t len = m_data[0];             //
     if (len > 8)
+		{
         len = 8;
+		}
     strncpy(str_sensorAddr, (char *)&m_data[1], 8); // m_data1[2]-m_data1[9]???ID
     str_sensorAddr[8] = '\0';
 
@@ -483,9 +485,12 @@ void HandleControl(SensorProtocol *pkt)
     setBeginDebug = m_data3[1];    				 //
     uint8_t setDts6012En_PDA = m_data3[2]; //
     uint8_t setNd06En_PDA = m_data3[3];    //
-    // byte4-5
+		setResetParaFlg = m_data3[4]; 
+		// byte5 free
     uint8_t set_distance_learn = m_data3[6];   //
     uint8_t set_close_time_learn = m_data3[7]; //
+		
+		
 		
 		//***********************************************************************************
     // SENSOR -> PDA
@@ -501,7 +506,14 @@ void HandleControl(SensorProtocol *pkt)
 				DistanceThresholdLearningReqFlg = 0;
 				ClosingTimeLearningReqFlg = 0;
     }
-
+		
+		uint8_t doResetPara = 0;
+		if(setResetParaFlg == 0XAA)
+		{
+			paraTable_Reset();
+			doResetPara = 1;
+		}
+		
     if (sensor_status == DistanceThresholdLearning_STATUS)
     {
         // dts6012 IO
@@ -587,17 +599,17 @@ void HandleControl(SensorProtocol *pkt)
     // endif(sensor_status == 2)
 
     /*
-        - 0x88: ???��??
-        - 0xAA???????????
-        - 0X55?????????
+        - 0x88: succeed
+        - 0xAA: working
+		    - 0X55: failed
     */
     SensorProtocol *resp = (SensorProtocol *)txBuffer3;
     resp->head = HEADER;
-    resp->sj = 0x2234; // ?????????
+    resp->sj = 0x2234; 
     resp->version = 0X01;
     resp->cmd = CONTROL_CMD;
 
-    // ???DATA1??
+    // DATA1
     resp->l1 = 2;
     uint8_t *resp_data = resp->data1;
     if (returnSensorType != m_sensorType111)
@@ -610,12 +622,12 @@ void HandleControl(SensorProtocol *pkt)
     }
     // resp_data[1] = 0;  // ???
 
-    // ???DATA2
+    // DATA2
     resp_data[2] = 2;
     switch (setBeginDebug)
     {
     case 0XAA:
-        if (sensor_status == 6)
+        if (sensor_status == DistanceThresholdLearning_STATUS)
         {
             resp_data[3] = 0X88;
         }
@@ -627,7 +639,7 @@ void HandleControl(SensorProtocol *pkt)
         // resp_data[3] = 0X88;
 
     case 0X55:
-        if (sensor_status == 1)
+        if (sensor_status == NormalWorking_STATUS)
         {
             resp_data[3] = 0X88;
         }
@@ -642,7 +654,7 @@ void HandleControl(SensorProtocol *pkt)
     }
     resp_data[4] = 0;
 
-    // ???DATA3
+    // DATA3
     resp_data[5] = 2;
     switch (setDts6012En_PDA)
     {
@@ -674,17 +686,13 @@ void HandleControl(SensorProtocol *pkt)
 
     // DATA5
     resp_data[11] = 2;
-    // switch () {
-    // case 0XAA:
-    //     resp_data[12] = 0X88;
-    //     break;
-    // case 0X55:
-    //     resp_data[12] = 0X55;
-    //     break;
-    // default:
-    //     break;
-    // }
-    // resp_data[13] = 0;
+    if (setResetParaFlg == 0xAA) {
+				if(doResetPara == 1)
+					resp_data[12] = 0X88;
+        else
+					resp_data[12] = 0X55;        
+    }
+    resp_data[13] = 0;
 
     // DATA6
     resp_data[14] = 2;
@@ -704,21 +712,29 @@ void HandleControl(SensorProtocol *pkt)
     resp_data[17] = 42;
 		if (DistanceThresholdLearningSuccessFlg == 1)
 		{
-				resp_data[18] = 0X88;
+				//resp_data[18] = 0X88;
 				// resp_data[19] = 0;
 				// 3-4  20 21
 				WriteU16LittleEndian(&resp_data[20], dts6012DistancdLearnValue); //   PARA_TABLE_USE.data.dts6012StudyDistance
 				// 5-6  22  23
+			if(PARA_TABLE_USE.data.functionChioce == 0x11)
+			{
 				WriteU16LittleEndian(&resp_data[22], nd06DistancdLearnValue); //   PARA_TABLE_USE.data.nd06StudyDistance
+			}
+			else
+			{
+				WriteU16LittleEndian(&resp_data[22], nd06StudyDepEven); 
+			}
+				
 		} // if (DistanceThresholdLearningSuccessFlg == 1)
-		// ????
-		else if (now_DistanceThresholdLearning_Flg == 1)
-		{
-				resp_data[18] = 0XAA;
-				WriteU16LittleEndian(&resp_data[20], 0);
-				WriteU16LittleEndian(&resp_data[22], 0);
-		}
-		// ?????
+		
+//		else if (now_DistanceThresholdLearning_Flg == 1)
+//		{
+//				resp_data[18] = 0XAA;
+//				WriteU16LittleEndian(&resp_data[20], 0);
+//				WriteU16LittleEndian(&resp_data[22], 0);
+//		}
+		// 
 		else if (DistanceThresholdLearningFailed_Flg == 1)
 		{
 				resp_data[18] = 0X55;
@@ -729,36 +745,46 @@ void HandleControl(SensorProtocol *pkt)
     switch (set_distance_learn)
     {
     case 0XAA:
-        
+        if((DistanceThresholdLearningReqFlg == 1) || (DistanceThresholdLearningSuccessFlg == 1))
+				{
+					resp_data[18] = 0X88;
+				}
         break;
 
     case 0X55:
-        resp_data[18] = 0X55;
+				if(DistanceThresholdLearningReqFlg == 0)
+				{
+					resp_data[18] = 0X88;
+				}
+				else
+				{
+					resp_data[18] = 0X55;
+				}
         // resp_data[19] = 0;
         // 3-4  20 21
-//        WriteU16LittleEndian(&resp_data[20], 0);
-//        // 5-6  22  23
-//        WriteU16LittleEndian(&resp_data[22], 0);
-		switch (PARA_TABLE_USE.data.functionChioce)
-    {
-    case 0x11: //
-    {
-        PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
-				PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
-				paraTable_Write();
-			break;
-    }
-    case 0x22: //
-    { 
-			PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance = dts6012DistancdLearnValue;
-				//PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
-			memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, cargoLift_nd06LearnValue, 16);
-				paraTable_Write();
-			break;
-    }
-    default:
-      break;
-    }			
+        WriteU16LittleEndian(&resp_data[20], 0);
+        // 5-6  22  23
+        WriteU16LittleEndian(&resp_data[22], 0);
+//		switch (PARA_TABLE_USE.data.functionChioce)
+//    {
+//    case 0x11: //
+//    {
+//        PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
+//				PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+//				paraTable_Write();
+//			break;
+//    }
+//    case 0x22: //
+//    { 
+//			PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance = dts6012DistancdLearnValue;
+//				//PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+//			memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, cargoLift_nd06LearnValue, 16);
+//				paraTable_Write();
+//			break;
+//    }
+//    default:
+//      break;
+//    }			
 		break;
 
     default:
@@ -779,27 +805,26 @@ void HandleControl(SensorProtocol *pkt)
         idx += 2;
     }
 
-    // ???DATA8
-    // ?????????
+    // DATA8
     resp_data[60] = 10; // +43
     switch (set_close_time_learn)
     {
     case 0XAA:
-        if (ClosingTimeLearningSuccessFlg == 1)
+        if ((ClosingTimeLearningReqFlg == 1)||(ClosingTimeLearningSuccessFlg == 1))
         {
             resp_data[61] = 0X88;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], PARA_TABLE_USE.data.closingDoorTime);
         }
-        // ????
+        // 
         else if (now_ClosingTimeLearning_Flg == 1)
         {
             resp_data[61] = 0XAA;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], 0);
         }
-        // ?????
-        else if (ClosingTimeLearningFailed_Flg == 1)
+        // 
+        else if (ClosingTimeLearningReqFlg == 0) // ClosingTimeLearningFailed_Flg == 1
         {
             resp_data[61] = 0X55;
             resp_data[62] = 0;
@@ -808,7 +833,11 @@ void HandleControl(SensorProtocol *pkt)
 
         break;
     case 0X55:
-        resp_data[61] = 0X55;
+				if (ClosingTimeLearningReqFlg == 0)
+					resp_data[61] = 0X88;
+				else
+					resp_data[61] = 0X55;
+				
         resp_data[62] = 0;
         WriteU16LittleEndian(&resp_data[63], 0);
         break;
@@ -816,21 +845,21 @@ void HandleControl(SensorProtocol *pkt)
         break;
     }
 
-    // resp_data[65] = 0; //65-70???
+    // resp_data[65] = 0; //65-70
 
-    // ???DATA9
+    // DATA9
     resp_data[71] = 10;
     // 72-81
 
-    // ???DATA10
+    // DATA10
     resp_data[82] = 10;
-    // ???DATA11
+    // DATA11
     resp_data[93] = 10;
 
-    // ???????CRC
+    // CRC
     resp->length = 107;
     resp->crc = CalcCRC16((uint8_t *)&resp->cmd, resp->length);
-    // ????????
+    // 
     uint16_t total_len_resp = sizeof(SensorProtocol) - 3 + resp->length;
     RS485_PDA_TX_ENABLE();
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer3, total_len_resp, 100);

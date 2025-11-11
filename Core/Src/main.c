@@ -177,13 +177,6 @@ int main(void)
 		HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
 	}
 	
-//	while(1)
-//	{
-//		HAL_GPIO_WritePin(RS485_GHP_EN_GPIO_Port, RS485_GHP_EN_Pin, 1); 
-//		HAL_UART_Transmit(&huart2, toolingHandShake, 30, 20);
-//		HAL_Delay(40);
-//		HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
-//	}
 
   /* USER CODE END 2 */
 
