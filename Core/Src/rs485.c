@@ -40,11 +40,10 @@ unsigned char gLookupTableCRC8[256] = {
     0xB4, 0x25, 0x57, 0xC6, 0xB3, 0x22, 0x50, 0xC1,
     0xBA, 0x2B, 0x59, 0xC8, 0xBD, 0x2C, 0x5E, 0xCF};
 
-		
 uint16_t RxElevatorCnt = 0;
 uint16_t headerIsFoundFlag = 0;
 uint16_t rxSize = 6;
-bool isSixBytes = true; // trueï¿½ï¿½Ê¾ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ø·ï¿½ï¿½Íµï¿½6ï¿½ï¿½ï¿½Ö½Ú£ï¿½falseï¿½ï¿½Ê¾ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½HCBï¿½ï¿½Ø¸ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½Ö½ï¿½
+bool isSixBytes = true; // true??????????????????6??????false?????????HCB??????4?????
 bool isFixBytes = false;
 
 ControlSystemPara CSpara = {0, 0, 0, 0, 0};
@@ -55,7 +54,7 @@ uint8_t RxDataElevator[6] = {0, 0, 0, 0, 0, 0};
 uint8_t rxDataBuffPDA[4] = {0, 0, 0, 0};
 uint8_t rs485ElevatorRxCpltFlag = 0;
 uint8_t rs485PDARxCpltFlag = 0;
-		
+
 uint8_t testArr[100];
 uint16_t testii = 0;
 uint8_t testArr2[100];
@@ -63,10 +62,10 @@ uint16_t testii2 = 0;
 
 uint16_t rxIndex = 0;
 uint16_t total_len = 0;
-uint8_t rxDBuffPDA[MAX_RX_LEN]; 
+uint8_t rxDBuffPDA[MAX_RX_LEN];
 uint8_t iindex = 0;
-uint8_t rx_DBuffPDA[MAX_RX_LEN];   
-SensorProtocol *global_pkt = NULL; 
+uint8_t rx_DBuffPDA[MAX_RX_LEN];
+SensorProtocol *global_pkt = NULL;
 
 uint16_t rxIndexTooling = 0;
 uint16_t rxIndexTooling2 = 0;
@@ -74,12 +73,10 @@ uint8_t rxDBuffTooling1[10];
 uint8_t rxDBuffTooling2[10];
 uint8_t gotToolingHandshake = 0;
 
-
-
 /*******************************************************************************
- **å‡½æ•°åŠŸèƒ½ï¼šæŸ¥è¡¨æ³•è®¡ç®—CRC
- **å‚æ•°è¾“å…¥ï¼šinBufferï¼šè¿›è¡Œæ ¡éªŒçš„æ•°æ®å—å¤´åœ°å€ï¼›inSizeï¼šæ•°æ®å—å¤§å°
- **æ•°æ®è¿”å›žï¼šCRCæ ¡éªŒç 
+ **º¯Êý¹¦ÄÜ£º²é±í·¨¼ÆËãCRC
+ **²ÎÊýÊäÈë£ºinBuffer£º½øÐÐÐ£ÑéµÄÊý¾Ý¿éÍ·µØÖ·£»inSize£ºÊý¾Ý¿é´óÐ¡
+ **Êý¾Ý·µ»Ø£ºCRCÐ£ÑéÂë
  *******************************************************************************/
 uint8_t CalcCRC8(uint8_t *inBuffer, int inSize)
 {
@@ -105,16 +102,15 @@ uint8_t xor_checkSum(uint8_t *data, uint8_t length)
     return checkSum;
 }
 
-
 /**rx_data_Elevator
- * @breif   åˆå§‹åŒ–RS485æ”¶å‘å™¨ä¸ºæŽ¥æ”¶æ¨¡å¼ï¼Œæ­¤485ç”¨äºŽç›‘å¬æŽ§åˆ¶ç³»ç»Ÿé€šä¿¡
- * @param   æ— 
- * @retval  æ— 
- * @note    åœ¨è°ƒç”¨æ­¤å‡½æ•°ä¹‹å‰ï¼Œç¡®ä¿å·²ç»åˆå§‹åŒ–é€šä¿¡ä¸²å£å’ŒæŽ§åˆ¶GPIO
+ * @breif   ³õÊ¼»¯RS485ÊÕ·¢Æ÷Îª½ÓÊÕÄ£Ê½£¬´Ë485ÓÃÓÚ¼àÌý¿ØÖÆÏµÍ³Í¨ÐÅ
+ * @param   ÎÞ
+ * @retval  ÎÞ
+ * @note    ÔÚµ÷ÓÃ´Ëº¯ÊýÖ®Ç°£¬È·±£ÒÑ¾­³õÊ¼»¯Í¨ÐÅ´®¿ÚºÍ¿ØÖÆGPIO
  */
 void RS485_Elevator_Init()
 {
-    /* ä½¿èƒ½ä¸²å£æŽ¥æ”¶ä¸­æ–­ */
+    /* Ê¹ÄÜ´®¿Ú½ÓÊÕÖÐ¶Ï */
     HAL_UART_Receive_IT(&RS485_Elevator_USART, rxDataBuffElevator, 1);
 
     RS485_Elevator_RX_ENABLE();
@@ -122,17 +118,17 @@ void RS485_Elevator_Init()
 
 void RS485_PDA_Init()
 {
-    /* ä½¿èƒ½ä¸²å£æŽ¥æ”¶ä¸­æ–­ */
+    /* Ê¹ÄÜ´®¿Ú½ÓÊÕÖÐ¶Ï */
     HAL_UART_Receive_IT(&RS485_PDA_USART, rxDataBuffPDA, 4);
 
     RS485_PDA_RX_ENABLE();
 }
 
 /**
- * @breif   æŽ§åˆ¶RS485æ”¶å‘å™¨å‘é€æ•°æ®
- * @param   data è¦å‘é€çš„æ•°æ®
- * @param   len  è¦å‘é€æ•°æ®çš„é•¿åº¦
- * @retval  0 - å‘é€æˆåŠŸï¼Œ-1 = å‘é€å¤±è´¥
+ * @breif   ¿ØÖÆRS485ÊÕ·¢Æ÷·¢ËÍÊý¾Ý
+ * @param   data Òª·¢ËÍµÄÊý¾Ý
+ * @param   len  Òª·¢ËÍÊý¾ÝµÄ³¤¶È
+ * @retval  0 - ·¢ËÍ³É¹¦£¬-1 = ·¢ËÍÊ§°Ü
  */
 int RS485_Elevator_Transmit(uint8_t *data, uint16_t len)
 {
@@ -167,8 +163,8 @@ int RS485_PDA_Transmit(uint8_t *data, uint16_t len)
 }
 
 /**
- * @brief   ä¸²å£ä¸­æ–­å›žè°ƒå‡½æ•°
- * @note    æ­¤å‡½æ•°å±žäºŽå¼±å®šä¹‰å‡½æ•°çš„é‡æ–°å®žçŽ°ï¼ŒHALåº“ä¼šè‡ªåŠ¨è°ƒç”¨
+ * @brief   ´®¿ÚÖÐ¶Ï»Øµ÷º¯Êý
+ * @note    ´Ëº¯ÊýÊôÓÚÈõ¶¨Òåº¯ÊýµÄÖØÐÂÊµÏÖ£¬HAL¿â»á×Ô¶¯µ÷ÓÃ
  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -178,29 +174,29 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {
         if (isToolingTest == 1)
         {
-//            if (rxIndexTooling == 0 && rxDBuffTooling1[0] != 0XAC)
-//            {
-//                rxIndexTooling = 0;
-//                HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
-//                return;
-//            }
-//            rxIndexTooling++;
-//            if (rxIndexTooling > 9)
-//            {
-//                Process485Tooling(rxDBuffTooling1); // 2F
-//                rxIndexTooling = 0;
-//                memset(rxDBuffTooling1, 0, sizeof(rxDBuffTooling1));
-//                HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
-//                // HAL_Delay(100);
-//                HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
-//                return;
-//            }
+            //            if (rxIndexTooling == 0 && rxDBuffTooling1[0] != 0XAC)
+            //            {
+            //                rxIndexTooling = 0;
+            //                HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
+            //                return;
+            //            }
+            //            rxIndexTooling++;
+            //            if (rxIndexTooling > 9)
+            //            {
+            //                Process485Tooling(rxDBuffTooling1); // 2F
+            //                rxIndexTooling = 0;
+            //                memset(rxDBuffTooling1, 0, sizeof(rxDBuffTooling1));
+            //                HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
+            //                // HAL_Delay(100);
+            //                HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
+            //                return;
+            //            }
 
-//            if (rxIndexTooling > 10)
-//            {
-//                rxIndexTooling = 0;
-//            }
-//            HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
+            //            if (rxIndexTooling > 10)
+            //            {
+            //                rxIndexTooling = 0;
+            //            }
+            //            HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
         }
 
         else
@@ -293,7 +289,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                 iindex = 0;
             }
 
-            //  ï¿½ï¿½ï¿½Headerï¿½Ç·ï¿½Æ¥ï¿½ï¿½
+            //  ???Header??????
             if (rxIndex == 0 && rxDBuffPDA[0] != 0XAA) //(HEADER & 0xFF)
             {
                 rxIndex = 0;
@@ -303,33 +299,33 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
             if (rxIndex >= sizeof(SensorProtocol))
             {
-                // 
+                //
                 SensorProtocol *pkt = (SensorProtocol *)rxDBuffPDA;
-                global_pkt = pkt; 
+                global_pkt = pkt;
 
                 uint8_t sizeSP = sizeof(SensorProtocol);
-                total_len = sizeSP - 3  + pkt->length; // /*cmd+l1 = 3*/ DATA1
+                total_len = sizeSP - 3 + pkt->length; // /*cmd+l1 = 3*/ DATA1
                 if (total_len >= MAX_RX_LEN)
                 {
                     rxIndex = 0;
                     total_len = 0;
-                    memset(rxDBuffPDA, 0, sizeof(rxDBuffPDA)); // 
+                    memset(rxDBuffPDA, 0, sizeof(rxDBuffPDA)); //
 
                     RS485_PDA_RX_ENABLE();
                     HAL_UART_Receive_IT(&RS485_PDA_USART, &rxDBuffPDA[rxIndex], 1);
                     return;
                 }
 
-                if (rxIndex >= total_len - 1) 
+                if (rxIndex >= total_len - 1)
                 {
                     ProcessPacket(pkt);
 
                     rxIndex = 0;
                     total_len = 0;
-                    memset(rxDBuffPDA, 0, sizeof(rxDBuffPDA)); 
+                    memset(rxDBuffPDA, 0, sizeof(rxDBuffPDA));
                     RS485_PDA_RX_ENABLE();
                     HAL_UART_Receive_IT(&RS485_PDA_USART, &rxDBuffPDA[rxIndex], 1);
-                    return; 
+                    return;
                 }
             }
 
@@ -374,24 +370,23 @@ void ProcessElevatorData(void)
         if (checkXor == rx_data_Elevator[4])
         {
 
-            masterElevator_LevelingSignal = (rx_data_Elevator[1] >> 0) & 0x01; // Æ½ï¿½ï¿½ï¿½Åºï¿½
+            masterElevator_LevelingSignal = (rx_data_Elevator[1] >> 0) & 0x01; // ??????
             // masterElevator_OF = (rx_data_Elevator[1] >> 0) & 0x01;
 
             /*
-                ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½
+                ?????????????
                 byte1
-                    7 IOï¿½ï¿½ï¿½ï¿½
-                    6 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-                    5 ï¿½ï¿½ï¿½ï¿½
-                    4 ï¿½ï¿½
-                    3 -0 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬ ï¿½ï¿½00ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½01ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½02ï¿½ï¿½ï¿½ï¿½Ä£Ê½
-                byte5: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                    7 IO????
+                    6 ??????????
+                    5 ????
+                    4 ??
+                    3 -0 ???????????? ??00??????????01????????02??????
+                byte5: ??????
             */
             tx_data_Door[0] = rx_data_Elevator[0];
 
-            // ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½
-            ByteBits *byte_bits = (ByteBits *)&tx_data_Door[1]; // Ö¸ï¿½ï¿½ packet[1]
-
+            // ????2??¦Ë?????
+            ByteBits *byte_bits = (ByteBits *)&tx_data_Door[1]; // ??? packet[1]
 
             switch (sensor_status)
             {
@@ -420,13 +415,13 @@ void ProcessElevatorData(void)
             byte_bits->bits.bit2 = 0; // bit2=1
             byte_bits->bits.bit3 = 0; // bit3=0
 
-            byte_bits->bits.bit4 = 0; // bit4=ï¿½ï¿½
+            byte_bits->bits.bit4 = 0; // bit4=??
             // byte_bits->bits.bit5 = fingerDetected_flag;              // bit5=
             // byte_bits->bits.bit6 = regionalObjectDetected_flag_ND06; // bit6=
             byte_bits->bits.bit7 = IO_dts6012 || IO_ND06; // bit7=IO
             // byte_bits->bits.bit7 = 1; // bit7=IO
 
-            // byte5 ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½
+            // byte5 ???????
 
             tx_data_Door[6] = xor_checkSum(tx_data_Door, 6);
 
@@ -440,63 +435,63 @@ void ProcessElevatorData(void)
     {
         uint8_t crcValue = CalcCRC8(rx_data_Elevator, rxSize - 1);
 
-        if (crcValue == rx_data_Elevator[rxSize - 1]) 
+        if (crcValue == rx_data_Elevator[rxSize - 1])
         {
 
-            if (isSixBytes) 
+            if (isSixBytes)
             {
                 if ((rx_data_Elevator[1] & 0X01))
-                    CSpara.openDoorCmd = 1; 
+                    CSpara.openDoorCmd = 1;
                 else
                     CSpara.openDoorCmd = 0;
 
                 if ((rx_data_Elevator[1] & 0X02))
-                    CSpara.closeDoorCmd = 1; 
+                    CSpara.closeDoorCmd = 1;
                 else
                     CSpara.closeDoorCmd = 0;
             }
-            else 
+            else
             {
                 if ((rx_data_Elevator[1] & 0X04)) // HCB
                     CSpara.LevelingSignal = 0;
                 else
                     CSpara.LevelingSignal = 1;
 
-                if ((rx_data_Elevator[1] & 0X10)) 
+                if ((rx_data_Elevator[1] & 0X10))
                 {
-//                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
-//                    {
-                        CSpara.OLS = 0; 
-//                    }
-//                    else
-//                    {
-//                        CSpara.OLS = 1;
-//                    }
+                    //                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
+                    //                    {
+                    CSpara.OLS = 0;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        CSpara.OLS = 1;
+                    //                    }
                 }
                 else
                 {
-//                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
-//                    {
-                        CSpara.OLS = 1; 
-//                    }
-//                    else
-//                    {
-//                        CSpara.OLS = 0;
-//                    }
+                    //                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
+                    //                    {
+                    CSpara.OLS = 1;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        CSpara.OLS = 0;
+                    //                    }
                 }
 
                 if ((rx_data_Elevator[1] & 0X20))
-                    CSpara.CLS = 1; // ï¿½ï¿½ï¿½Åµï¿½Î»ï¿½Åºï¿½
+                    CSpara.CLS = 1; // ?????¦Ë???
                 else
                     CSpara.CLS = 0;
             }
-            isSixBytes = !isSixBytes; 
+            isSixBytes = !isSixBytes;
         }
     }
 
     headerIsFoundFlag = 0;
     RxElevatorCnt = 0;
-    memset(rx_data_Elevator, 0, sizeof(rx_data_Elevator)); 
+    memset(rx_data_Elevator, 0, sizeof(rx_data_Elevator));
     return;
 }
 
@@ -534,9 +529,9 @@ void Process485Tooling(uint8_t *data)
     if (getIN_IO == 0)
     {
         if (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_RESET)
-				{
+        {
             getIN_IO = 1;
-				}
+        }
     }
 
     testIO();
@@ -554,7 +549,7 @@ void Process485Tooling(uint8_t *data)
 uint8_t toolingStatusR = 0;
 void ProcessGHPTooling(uint8_t *data)
 {
-		uint8_t iiiiW = 1;
+    uint8_t iiiiW = 1;
     memcpy(resultUp, resultUp485GHP, 20);
 
     if (data[9] != 0X2F)
@@ -567,7 +562,7 @@ void ProcessGHPTooling(uint8_t *data)
     res2 = testND06();
 
     testIO();
-		testInX();
+    testInX();
 
     if (res1 == 0)
     {
@@ -586,7 +581,7 @@ void ProcessGHPTooling(uint8_t *data)
     resultUp[19] = xor_checkSum(resultUp, (sizeof(resultUp) - 1));
 
     HAL_GPIO_WritePin(RS485_GHP_EN_GPIO_Port, RS485_GHP_EN_Pin, GPIO_PIN_SET);
-    
+
     while (iiiiW < 250)
     {
         iiiiW++;
@@ -594,17 +589,17 @@ void ProcessGHPTooling(uint8_t *data)
 
     HAL_UART_Transmit(&huart2, resultUp, 20, 5);
     HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
-		
-		toolingStatusR = PARA_TABLE_USE.data.passToolingStatus;
-		
+
+    toolingStatusR = PARA_TABLE_USE.data.passToolingStatus;
+
     if (res1 && res2)
     {
         isToolingTest = 0;
         HAL_GPIO_WritePin(TOF_LED_GPIO_Port, TOF_LED_Pin, GPIO_PIN_SET);
-				
-				paraTable_Reset();
-			
-        if ( toolingStatusR== 0x00)
+
+        paraTable_Reset();
+
+        if (toolingStatusR == 0x00)
         {
             PARA_TABLE_USE.data.passToolingStatus = 0x01;
             paraTable_Write();

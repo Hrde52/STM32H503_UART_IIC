@@ -69,7 +69,7 @@ const unsigned char auchCRCLo[] = {
 uint16_t show_pktcrc;
 uint16_t show_crc;
 uint8_t m_sensorType111;
-		
+
 uint8_t txBuffer1[50] = {0};
 uint8_t txBuffer2[144] = {0};
 uint8_t STOP_DistanceThresholdLearning_ReqFlg = 0;
@@ -109,7 +109,6 @@ void WriteU16LittleEndian(uint8_t *buf, uint32_t value)
     // buf[2] = (value >> 16) & 0xFF;
     // buf[3] = (value >> 24) & 0xFF;
 }
-
 
 void ProcessPacket(SensorProtocol *pkt)
 {
@@ -173,8 +172,6 @@ void ProcessPacket(SensorProtocol *pkt)
         break;
     }
 }
-
-
 
 void HandleHandshake(SensorProtocol *pkt)
 {
@@ -264,7 +261,6 @@ void HandleHandshake(SensorProtocol *pkt)
     RS485_PDA_TX_ENABLE();
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer1, total_len_resp, 100);
 }
-
 
 void HandleHeartbeat(SensorProtocol *pkt)
 {
@@ -453,7 +449,6 @@ void HandleHeartbeat(SensorProtocol *pkt)
     return;
 }
 
-
 uint8_t setResetParaFlg = 0;
 void HandleControl(SensorProtocol *pkt)
 {
@@ -468,9 +463,9 @@ void HandleControl(SensorProtocol *pkt)
     char str_sensorAddr[9] = {0};        // char *str_sensorAddr[13];
     uint8_t len = m_data[0];             //
     if (len > 8)
-		{
+    {
         len = 8;
-		}
+    }
     strncpy(str_sensorAddr, (char *)&m_data[1], 8); // m_data1[2]-m_data1[9]???ID
     str_sensorAddr[8] = '\0';
 
@@ -481,18 +476,16 @@ void HandleControl(SensorProtocol *pkt)
         - 0X55: cancel
     */
     // L3 = 30 m_data1[10]
-    uint8_t *m_data3 = &m_data1[11];       // 2+1+8   
-    setBeginDebug = m_data3[1];    				 //
+    uint8_t *m_data3 = &m_data1[11];       // 2+1+8
+    setBeginDebug = m_data3[1];            //
     uint8_t setDts6012En_PDA = m_data3[2]; //
     uint8_t setNd06En_PDA = m_data3[3];    //
-		setResetParaFlg = m_data3[4]; 
-		// byte5 free
+    setResetParaFlg = m_data3[4];
+    // byte5 free
     uint8_t set_distance_learn = m_data3[6];   //
     uint8_t set_close_time_learn = m_data3[7]; //
-		
-		
-		
-		//***********************************************************************************
+
+    //***********************************************************************************
     // SENSOR -> PDA
     if (setBeginDebug == 0XAA)
     {
@@ -501,19 +494,19 @@ void HandleControl(SensorProtocol *pkt)
     //
     else if (setBeginDebug == 0X55)
     {
-        sensor_status = NormalWorking_STATUS; // NormalWorking_STATUS
-				DistanceThresholdLearningSuccessFlg = 0;   // add 2025/11/10
-				DistanceThresholdLearningReqFlg = 0;
-				ClosingTimeLearningReqFlg = 0;
+        sensor_status = NormalWorking_STATUS;    // NormalWorking_STATUS
+        DistanceThresholdLearningSuccessFlg = 0; // add 2025/11/10
+        DistanceThresholdLearningReqFlg = 0;
+        ClosingTimeLearningReqFlg = 0;
     }
-		
-		uint8_t doResetPara = 0;
-		if(setResetParaFlg == 0XAA)
-		{
-			paraTable_Reset();
-			doResetPara = 1;
-		}
-		
+
+    uint8_t doResetPara = 0;
+    if (setResetParaFlg == 0XAA)
+    {
+        paraTable_Reset();
+        doResetPara = 1;
+    }
+
     if (sensor_status == DistanceThresholdLearning_STATUS)
     {
         // dts6012 IO
@@ -553,20 +546,20 @@ void HandleControl(SensorProtocol *pkt)
             break;
 
         case 0x55:
-//            if (sensor_status == DistanceThresholdLearning_STATUS)
-//            {
-//                STOP_DistanceThresholdLearning_ReqFlg = 1;
-//                if (PARA_TABLE_USE.data.dts6012StudyDistance != dts6012DistancdLearnValue)
-//                {
-//                    PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
-//                }
+            //            if (sensor_status == DistanceThresholdLearning_STATUS)
+            //            {
+            //                STOP_DistanceThresholdLearning_ReqFlg = 1;
+            //                if (PARA_TABLE_USE.data.dts6012StudyDistance != dts6012DistancdLearnValue)
+            //                {
+            //                    PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
+            //                }
 
-//                if (PARA_TABLE_USE.data.nd06StudyDistance != nd06DistancdLearnValue)
-//                {
-//                    PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
-//                }
-//            }
-						DistanceThresholdLearningReqFlg = 0;
+            //                if (PARA_TABLE_USE.data.nd06StudyDistance != nd06DistancdLearnValue)
+            //                {
+            //                    PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+            //                }
+            //            }
+            DistanceThresholdLearningReqFlg = 0;
             break;
 
         default:
@@ -581,15 +574,15 @@ void HandleControl(SensorProtocol *pkt)
             break;
 
         case 0x55:
-					ClosingTimeLearningReqFlg = 0;
-//            if (sensor_status == DistanceThresholdLearning_STATUS)  // 2
-//            {
-//                STOP_ClosingTimeLearningReqFlg = 1;
-//                if (PARA_TABLE_USE.data.closingDoorTime != closeTimeCnt)
-//                {
-//                    PARA_TABLE_USE.data.closingDoorTime = closeTimeCnt;
-//                }
-//            }
+            ClosingTimeLearningReqFlg = 0;
+            //            if (sensor_status == DistanceThresholdLearning_STATUS)  // 2
+            //            {
+            //                STOP_ClosingTimeLearningReqFlg = 1;
+            //                if (PARA_TABLE_USE.data.closingDoorTime != closeTimeCnt)
+            //                {
+            //                    PARA_TABLE_USE.data.closingDoorTime = closeTimeCnt;
+            //                }
+            //            }
             break;
 
         default:
@@ -601,11 +594,11 @@ void HandleControl(SensorProtocol *pkt)
     /*
         - 0x88: succeed
         - 0xAA: working
-		    - 0X55: failed
+            - 0X55: failed
     */
     SensorProtocol *resp = (SensorProtocol *)txBuffer3;
     resp->head = HEADER;
-    resp->sj = 0x2234; 
+    resp->sj = 0x2234;
     resp->version = 0X01;
     resp->cmd = CONTROL_CMD;
 
@@ -686,11 +679,12 @@ void HandleControl(SensorProtocol *pkt)
 
     // DATA5
     resp_data[11] = 2;
-    if (setResetParaFlg == 0xAA) {
-				if(doResetPara == 1)
-					resp_data[12] = 0X88;
+    if (setResetParaFlg == 0xAA)
+    {
+        if (doResetPara == 1)
+            resp_data[12] = 0X88;
         else
-					resp_data[12] = 0X55;        
+            resp_data[12] = 0X55;
     }
     resp_data[13] = 0;
 
@@ -710,82 +704,82 @@ void HandleControl(SensorProtocol *pkt)
 
     // DATA7
     resp_data[17] = 42;
-		if (DistanceThresholdLearningSuccessFlg == 1)
-		{
-				//resp_data[18] = 0X88;
-				// resp_data[19] = 0;
-				// 3-4  20 21
-				WriteU16LittleEndian(&resp_data[20], dts6012DistancdLearnValue); //   PARA_TABLE_USE.data.dts6012StudyDistance
-				// 5-6  22  23
-			if(PARA_TABLE_USE.data.functionChioce == 0x11)
-			{
-				WriteU16LittleEndian(&resp_data[22], nd06DistancdLearnValue); //   PARA_TABLE_USE.data.nd06StudyDistance
-			}
-			else
-			{
-				WriteU16LittleEndian(&resp_data[22], nd06StudyDepEven); 
-			}
-				
-		} // if (DistanceThresholdLearningSuccessFlg == 1)
-		
-//		else if (now_DistanceThresholdLearning_Flg == 1)
-//		{
-//				resp_data[18] = 0XAA;
-//				WriteU16LittleEndian(&resp_data[20], 0);
-//				WriteU16LittleEndian(&resp_data[22], 0);
-//		}
-		// 
-		else if (DistanceThresholdLearningFailed_Flg == 1)
-		{
-				resp_data[18] = 0X55;
-				WriteU16LittleEndian(&resp_data[20], 0);
-				WriteU16LittleEndian(&resp_data[22], 0);
-		}
-		
+    if (DistanceThresholdLearningSuccessFlg == 1)
+    {
+        // resp_data[18] = 0X88;
+        //  resp_data[19] = 0;
+        //  3-4  20 21
+        WriteU16LittleEndian(&resp_data[20], dts6012DistancdLearnValue); //   PARA_TABLE_USE.data.dts6012StudyDistance
+                                                                         // 5-6  22  23
+        if (PARA_TABLE_USE.data.functionChioce == 0x11)
+        {
+            WriteU16LittleEndian(&resp_data[22], nd06DistancdLearnValue); //   PARA_TABLE_USE.data.nd06StudyDistance
+        }
+        else
+        {
+            WriteU16LittleEndian(&resp_data[22], nd06StudyDepEven);
+        }
+
+    } // if (DistanceThresholdLearningSuccessFlg == 1)
+
+    //		else if (now_DistanceThresholdLearning_Flg == 1)
+    //		{
+    //				resp_data[18] = 0XAA;
+    //				WriteU16LittleEndian(&resp_data[20], 0);
+    //				WriteU16LittleEndian(&resp_data[22], 0);
+    //		}
+    //
+    else if (DistanceThresholdLearningFailed_Flg == 1)
+    {
+        resp_data[18] = 0X55;
+        WriteU16LittleEndian(&resp_data[20], 0);
+        WriteU16LittleEndian(&resp_data[22], 0);
+    }
+
     switch (set_distance_learn)
     {
     case 0XAA:
-        if((DistanceThresholdLearningReqFlg == 1) || (DistanceThresholdLearningSuccessFlg == 1))
-				{
-					resp_data[18] = 0X88;
-				}
+        if ((DistanceThresholdLearningReqFlg == 1) || (DistanceThresholdLearningSuccessFlg == 1))
+        {
+            resp_data[18] = 0X88;
+        }
         break;
 
     case 0X55:
-				if(DistanceThresholdLearningReqFlg == 0)
-				{
-					resp_data[18] = 0X88;
-				}
-				else
-				{
-					resp_data[18] = 0X55;
-				}
+        if (DistanceThresholdLearningReqFlg == 0)
+        {
+            resp_data[18] = 0X88;
+        }
+        else
+        {
+            resp_data[18] = 0X55;
+        }
         // resp_data[19] = 0;
         // 3-4  20 21
         WriteU16LittleEndian(&resp_data[20], 0);
         // 5-6  22  23
         WriteU16LittleEndian(&resp_data[22], 0);
-//		switch (PARA_TABLE_USE.data.functionChioce)
-//    {
-//    case 0x11: //
-//    {
-//        PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
-//				PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
-//				paraTable_Write();
-//			break;
-//    }
-//    case 0x22: //
-//    { 
-//			PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance = dts6012DistancdLearnValue;
-//				//PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
-//			memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, cargoLift_nd06LearnValue, 16);
-//				paraTable_Write();
-//			break;
-//    }
-//    default:
-//      break;
-//    }			
-		break;
+        //		switch (PARA_TABLE_USE.data.functionChioce)
+        //    {
+        //    case 0x11: //
+        //    {
+        //        PARA_TABLE_USE.data.dts6012StudyDistance = dts6012DistancdLearnValue;
+        //				PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+        //				paraTable_Write();
+        //			break;
+        //    }
+        //    case 0x22: //
+        //    {
+        //			PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance = dts6012DistancdLearnValue;
+        //				//PARA_TABLE_USE.data.nd06StudyDistance = nd06DistancdLearnValue;
+        //			memcpy(PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance, cargoLift_nd06LearnValue, 16);
+        //				paraTable_Write();
+        //			break;
+        //    }
+        //    default:
+        //      break;
+        //    }
+        break;
 
     default:
         break;
@@ -810,20 +804,20 @@ void HandleControl(SensorProtocol *pkt)
     switch (set_close_time_learn)
     {
     case 0XAA:
-        if ((ClosingTimeLearningReqFlg == 1)||(ClosingTimeLearningSuccessFlg == 1))
+        if ((ClosingTimeLearningReqFlg == 1) || (ClosingTimeLearningSuccessFlg == 1))
         {
             resp_data[61] = 0X88;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], PARA_TABLE_USE.data.closingDoorTime);
         }
-        // 
+        //
         else if (now_ClosingTimeLearning_Flg == 1)
         {
             resp_data[61] = 0XAA;
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], 0);
         }
-        // 
+        //
         else if (ClosingTimeLearningReqFlg == 0) // ClosingTimeLearningFailed_Flg == 1
         {
             resp_data[61] = 0X55;
@@ -833,11 +827,11 @@ void HandleControl(SensorProtocol *pkt)
 
         break;
     case 0X55:
-				if (ClosingTimeLearningReqFlg == 0)
-					resp_data[61] = 0X88;
-				else
-					resp_data[61] = 0X55;
-				
+        if (ClosingTimeLearningReqFlg == 0)
+            resp_data[61] = 0X88;
+        else
+            resp_data[61] = 0X55;
+
         resp_data[62] = 0;
         WriteU16LittleEndian(&resp_data[63], 0);
         break;
@@ -859,13 +853,11 @@ void HandleControl(SensorProtocol *pkt)
     // CRC
     resp->length = 107;
     resp->crc = CalcCRC16((uint8_t *)&resp->cmd, resp->length);
-    // 
+    //
     uint16_t total_len_resp = sizeof(SensorProtocol) - 3 + resp->length;
     RS485_PDA_TX_ENABLE();
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer3, total_len_resp, 100);
 }
-
-
 
 void HandleParamRead(SensorProtocol *pkt)
 {
@@ -926,7 +918,7 @@ void HandleParamRead(SensorProtocol *pkt)
             WriteU32LittleEndian(&data2[offset], param);
             offset += 4;
         }
-				//WriteU32LittleEndian(&data2[offset], closingDoorTimeThreshold);
+        // WriteU32LittleEndian(&data2[offset], closingDoorTimeThreshold);
         WriteU32LittleEndian(&data2[offset], PARA_TABLE_USE.data.closingDoorTimeThreshold);
         offset += 4;
         // ???????CRC
@@ -967,7 +959,6 @@ void HandleParamRead(SensorProtocol *pkt)
     return;
 }
 
-
 void HandleParamWrite(SensorProtocol *pkt)
 {
     // ????????
@@ -990,7 +981,6 @@ void HandleParamWrite(SensorProtocol *pkt)
     uint32_t funcValue = (writeData[5] << 24) | (writeData[4] << 16) |
                          (writeData[3] << 8) | writeData[2];
 
-
     if (PARA_TABLE_USE.data.functionChioce == 0x11 && groupIndex == 0 && internalIndex >= 3 && internalIndex <= 12) // 13
     {
         PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
@@ -998,10 +988,9 @@ void HandleParamWrite(SensorProtocol *pkt)
     }
     else if (PARA_TABLE_USE.data.functionChioce == 0x11 && groupIndex == 0 && internalIndex == 13) // F1.13????????????????
     {
-        //closingDoorTimeThreshold = funcValue;
-			PARA_TABLE_USE.DATE[internalIndex-1] = funcValue;
+        // closingDoorTimeThreshold = funcValue;
+        PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
     }
-
 
     else if (PARA_TABLE_USE.data.functionChioce == 0x22 && groupIndex == 0 && internalIndex >= 14 && internalIndex <= 36)
     {

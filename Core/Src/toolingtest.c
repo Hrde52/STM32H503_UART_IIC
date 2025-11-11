@@ -10,7 +10,7 @@
 
 void initTooling()
 {
-	//TOOLING_USART1_UART_Init();
+	// TOOLING_USART1_UART_Init();
 	TOOLING_USART2_UART_Init();
 }
 
@@ -83,7 +83,7 @@ void TOOLING_USART2_UART_Init(void)
 uint8_t testDTS()
 {
 	DTS6012_DATA dts6012DataTooling = {0, 0, 0, 0};
-	
+
 	dts6012_start();
 	dts6012_start();
 	dts6012_start();
@@ -104,7 +104,7 @@ uint8_t testDTS()
 	resultUp[10] = (dts6012DataTooling.secondPeakDistance >> 0) & 0xFF;
 	resultUp[11] = (dts6012DataTooling.secondPeakDistance >> 8) & 0xFF;
 	dts6012m_Stop();
-	
+
 	return 1;
 }
 
@@ -119,7 +119,7 @@ uint8_t testND06()
 	int i = 0;
 	int j = 0;
 	uint8_t ret = 0;
-	
+
 	while (tryTimesToolingN > 0)
 	{
 		tryTimesToolingN++;
@@ -181,13 +181,13 @@ void testInX()
 {
 	if (getIN_IO == 0)
 	{
-			if (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_SET)
-			{
-				getIN_IO = 1;
-			}
-			else
-			{
-				getIN_IO = 0;
-			}
+		if (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_SET)
+		{
+			getIN_IO = 1;
+		}
+		else
+		{
+			getIN_IO = 0;
+		}
 	}
 }

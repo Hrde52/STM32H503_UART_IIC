@@ -14,15 +14,15 @@ void DetectInitialState(void)
 {
     if (CSpara.CLS == 1)
     {
-        currentDoorState = STATE_CLOSED; // 
+        currentDoorState = STATE_CLOSED; //
     }
     else if (CSpara.OLS == 1)
     {
-        currentDoorState = STATE_OPENED; // 
+        currentDoorState = STATE_OPENED; //
     }
     else if (CSpara.openDoorCmd == 1)
     {
-        currentDoorState = STATE_OPENING; // 
+        currentDoorState = STATE_OPENING; //
     }
     else if (CSpara.closeDoorCmd == 1)
     {
@@ -41,8 +41,8 @@ void UpdateDoorStateMachine(void)
 {
     if (CSpara.LevelingSignal == 0 && masterElevator_LevelingSignal == 0)
     {
-      //  IdleFlg = 1;
-			IdleFlg = 0;
+        //  IdleFlg = 1;
+        IdleFlg = 0;
         return;
     }
 
@@ -50,12 +50,12 @@ void UpdateDoorStateMachine(void)
 
     switch (currentDoorState)
     {
-        
+
     case STATE_UNKNOWN:
         DetectInitialState();
         break;
 
-    case STATE_CLOSED: 
+    case STATE_CLOSED:
         pastDoorState = currentDoorState;
         if (CSpara.openDoorCmd /*&& CSpara.CLS*/)
         {
@@ -64,7 +64,7 @@ void UpdateDoorStateMachine(void)
 
         break;
 
-    case STATE_OPENING: 
+    case STATE_OPENING:
         pastDoorState = currentDoorState;
         if (CSpara.OLS)
         {
@@ -77,16 +77,16 @@ void UpdateDoorStateMachine(void)
 
         break;
 
-    case STATE_OPENED: 
+    case STATE_OPENED:
         pastDoorState = currentDoorState;
         if (CSpara.closeDoorCmd)
         {
             currentDoorState = STATE_CLOSING;
-            closingPhaseTimer = 0; 
+            closingPhaseTimer = 0;
         }
         break;
 
-    case STATE_CLOSING: 
+    case STATE_CLOSING:
         pastDoorState = currentDoorState;
         if (CSpara.CLS)
         {
