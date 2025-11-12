@@ -81,12 +81,12 @@ void paraTable_Init(void)
 {
 	uint32_t datatemp = 0;
 	datatemp = stmflash_read_word(PARA_TABLE_FLASH_SAVE_ADDR);
-	if (datatemp == 0XFFFFFFFF) // ˵����ַΪ��
+	if (datatemp == 0XFFFFFFFF) // 
 	{
 		memcpy(PARA_TABLE_USE.DATE, ParaTable_Default, sizeof(ParaTable_Default));
 		paraTable_Write();
 	}
-	else // ���в������ȡ����
+	else 
 	{
 		paraTable_Read();
 		//		memcpy(PARA_TABLE_USE.DATE, ParaTable_Default, sizeof(ParaTable_Default));
@@ -96,9 +96,21 @@ void paraTable_Init(void)
 
 void paraTable_Reset(void)
 {
-	uint32_t datatemp = 0;
-	datatemp = stmflash_read_word(PARA_TABLE_FLASH_SAVE_ADDR);
+//	uint32_t datatemp = 0;
+//	datatemp = stmflash_read_word(PARA_TABLE_FLASH_SAVE_ADDR);
 
 	memcpy(PARA_TABLE_USE.DATE, ParaTable_Default, sizeof(ParaTable_Default));
+	paraTable_Write();
+}
+
+void paraTable11_Reset(void)
+{
+	memcpy(&PARA_TABLE_USE.DATE[3], &ParaTable_Default[3], 10 * sizeof(uint32_t));
+	paraTable_Write();
+}
+
+void paraTable22_Reset(void)
+{
+	memcpy(&PARA_TABLE_USE.DATE[13], &ParaTable_Default[13], 23*sizeof(uint32_t));
 	paraTable_Write();
 }

@@ -36,13 +36,13 @@ void DetectInitialState(void)
 
 uint32_t closingPhaseTimer = 0;
 DoorState pastDoorState = STATE_UNKNOWN;
-// ״̬
+
 void UpdateDoorStateMachine(void)
 {
     if (CSpara.LevelingSignal == 0 && masterElevator_LevelingSignal == 0)
     {
-        //  IdleFlg = 1;
-        IdleFlg = 0;
+        IdleFlg = 1;
+        //IdleFlg = 0;
         return;
     }
 

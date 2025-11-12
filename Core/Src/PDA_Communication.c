@@ -306,84 +306,157 @@ void HandleHeartbeat(SensorProtocol *pkt)
     resp_data[offset++] = 0;
 
     resp_data[offset++] = 30;
-    WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.dts6012StudyDistance);
+		if(PARA_TABLE_USE.data.functionChioce == 0x11)
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.dts6012StudyDistance);
+		}
+		else
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance);			
+		}
     offset += 2;
-    WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.dts6012DistanceChkThreshold);
+		if(PARA_TABLE_USE.data.functionChioce == 0x11)
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.dts6012DistanceChkThreshold);
+		}
+		else
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.cargoLift_dts6012DistanceChkThreshold);
+		}
     offset += 2;
-    WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.sensorAddr);
+		if(PARA_TABLE_USE.data.functionChioce == 0x11)
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.sensorAddr);
+		}
     offset += 2;
-    WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.closingDoorTime);
-    offset += 2;
-
-    offset += 4;
-    // byte13????????????
-    switch (sensor_status)
-    {
-    case NormalWorking_STATUS:
-        resp_data[offset++] = 0XAA;
-        break;
-    case setUp_STATUS:
-        resp_data[offset++] = 0XA5;
-        break;
-    case DistanceThresholdLearning_STATUS:
-        resp_data[offset++] = 0XA5;
-        break;
-    case ClosingTimeLearning_STATUS:
-        resp_data[offset++] = 0XA5;
-        break;
-    case Fault_STATUS:
-        resp_data[offset++] = 0X55;
-        break;
-    default:
-        break;
+		if(PARA_TABLE_USE.data.functionChioce == 0x11)
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.closingDoorTime);
     }
+			offset += 2;
+		
+		// byte 9- 10
+		if(PARA_TABLE_USE.data.functionChioce == 0x11)
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.dts6012MinChkDistance);
+		}
+		else
+		{
+			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.cargoLift_dts6012MinChkDistance);
+		}
+		offset += 2;
+		
+    offset += 2; // 11 12
+    // byte13????????????
+//    switch (sensor_status)
+//    {
+//    case NormalWorking_STATUS:
+//        resp_data[offset++] = 0XAA;
+//        break;
+//    case Idle_STATUS:
+//        resp_data[offset++] = 0XA5;
+//        break;
+//    case DistanceThresholdLearning_STATUS:
+//        resp_data[offset++] = 0XA5;
+//        break;
+//    case ClosingTimeLearning_STATUS:
+//        resp_data[offset++] = 0XA5;
+//        break;
+//    case Fault_STATUS:
+//        resp_data[offset++] = 0X55;
+//        break;
+//    default:
+//        break;
+//    }
+			if(sensor_status == NormalWorking_STATUS)
+			{
+				resp_data[offset++] = 0XAA;
+			}
+			else
+			{
+				resp_data[offset++] = 0X55;
+			}
 
     // ???????
-    resp_data[offset++] = 0;
+    resp_data[offset++] = 0;   // b14
     resp_data[offset++] = 1; // ?????????byte15
-    resp_data[offset++] = ObjectIsDetectedFlag;
-    resp_data[offset++] = IO_ND06 | IO_dts6012;
-    offset += 3;
+    resp_data[offset++] = ObjectIsDetectedFlag;  //b16
+    resp_data[offset++] = IO_ND06 | IO_dts6012;   //b17
+    offset += 3;   //18 19 20
 
     /*
     ????????????
         0xAA ??????????
         0x55 ??????
-    ?????
     */
-    switch (ds6012OutputEN)
-    {
-    case 1:
-        resp_data[offset++] = 0XAA;
-        resp_data[offset++] = dts6012_data.objDetectFlag;
-        break;
-    case 0:
-        resp_data[offset++] = 0X55;
-        resp_data[offset++] = 0;
-        break;
-    default:
-        break;
-    }
-    offset += 2;
+		if(PARA_TABLE_USE.data.functionChioce == 0x11)
+		{
+			switch (ds6012OutputEN)
+			{
+			case 1:
+					resp_data[offset++] = 0XAA;   //b21
+					resp_data[offset++] = dts6012_data.objDetectFlag;  //b22
+					break;
+			case 0:
+					resp_data[offset++] = 0X55;
+					resp_data[offset++] = 0;
+					break;
+			default:
+					break;
+			}
+			offset += 2;  // b23 24
 
-    switch (nd06OutputEN)
-    {
-    case 1:
-        resp_data[offset++] = 0XAA;
-        resp_data[offset++] = nd06AV1C_objDetectFlag;
-        break;
-    case 0:
-        resp_data[offset++] = 0X55;
-        resp_data[offset++] = 0;
-        break;
-    default:
-        break;
-    }
-    offset += 4;
+			switch (nd06OutputEN)//b25
+			{
+			case 1:
+					resp_data[offset++] = 0XAA;   
+					resp_data[offset++] = nd06AV1C_objDetectFlag;
+					break;
+			case 0:
+					resp_data[offset++] = 0X55;
+					resp_data[offset++] = 0;
+					break;
+			default:
+					break;
+			}
+			offset += 4;   // byte26 27 28 29 
+		}
+		else
+		{
+			switch (cargoLift_IN)
+			{
+			case 1:
+					resp_data[offset++] = 0XAA;   //b21
+					resp_data[offset++] = dts6012_data.objDetectFlag;  //b22
+					break;
+			case 0:
+					resp_data[offset++] = 0X55;
+					resp_data[offset++] = 0;
+					break;
+			default:
+					break;
+			}
+			offset += 2;  // b23 24
 
-    resp_data[offset++] = 4;
-    resp_data[offset++] = 1;
-    resp_data[offset++] = 1;
+			switch (cargoLift_IN)//b25
+			{
+			case 1:
+					resp_data[offset++] = 0XAA;   
+					resp_data[offset++] = nd06AV1C_objDetectFlag;
+					break;
+			case 0:
+					resp_data[offset++] = 0X55;
+					resp_data[offset++] = 0;
+					break;
+			default:
+					break;
+			}
+			offset += 4;   // byte26 27 28 29 			
+		}
+
+    resp_data[offset++] = 4;  // b30
+    resp_data[offset++] = 1;	// b31
+    resp_data[offset++] = 1;  // b32
     offset += 2;
 
     // arrHeart4[0] = 80;
@@ -503,8 +576,25 @@ void HandleControl(SensorProtocol *pkt)
     uint8_t doResetPara = 0;
     if (setResetParaFlg == 0XAA)
     {
-        paraTable_Reset();
-        doResetPara = 1;
+				switch (PARA_TABLE_USE.data.functionChioce)
+				{
+				case 0x11:
+				{
+					paraTable11_Reset();
+					doResetPara = 1;
+					break;
+				}
+				case 0x22: //
+				{
+					paraTable22_Reset();
+					doResetPara = 1;
+					break;
+				}
+				default:
+					break;
+				}
+        //paraTable_Reset();
+        
     }
 
     if (sensor_status == DistanceThresholdLearning_STATUS)

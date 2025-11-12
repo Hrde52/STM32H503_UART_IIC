@@ -23,7 +23,7 @@ typedef union {
         uint32_t closingDoorTime;            		 	// 0.12 1400
 				uint32_t closingDoorTimeThreshold;     // 0.13    100
         
-        uint32_t cargoLift_dts6012StudyDistance;        // 0.13 2300
+        uint32_t cargoLift_dts6012StudyDistance;        // 0.14 2300
         uint32_t cargoLift_dts6012DistanceChkThreshold; // 0.14 300
         uint32_t cargoLift_dts6012MaxChkDistance;       // 0.15 4000
         uint32_t cargoLift_dts6012MinChkDistance;       // 0.16 300
@@ -57,5 +57,6 @@ void paraTable_Write(void);
 void paraTable_Read(void);
 void paraTable_Init(void);
 void paraTable_Reset(void);
-
+void paraTable11_Reset(void);
+void paraTable22_Reset(void);
 #endif
