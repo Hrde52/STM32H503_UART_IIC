@@ -704,6 +704,10 @@ void sensor_status_control(void)
     {
         sensor_status = NormalWorking_STATUS;
     }
+//		else if((sensor_status == NormalWorking_STATUS) && (ERR_D != 0))
+//		{
+//			sensor_status = Fault_STATUS;
+//		}
     else
     {
         // sensor_status = NormalWorking_STATUS;
@@ -753,8 +757,8 @@ void cargoLift_sensor_status_control(void)
     }
     else if (ERR_D != 0)
     {
-        //        sensor_status = Fault_STATUS;
-        //        HAL_NVIC_SystemReset();
+        sensor_status = Fault_STATUS;
+        HAL_NVIC_SystemReset();
         //        ERR_D = 0;
         //        sensor_status = NormalWorking_STATUS;
     }

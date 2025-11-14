@@ -41,8 +41,11 @@ void UpdateDoorStateMachine(void)
 {
     if (CSpara.LevelingSignal == 0 && masterElevator_LevelingSignal == 0)
     {
+			if(PARA_TABLE_USE.data.programVerison != 0x0666)
         IdleFlg = 1;
-        //IdleFlg = 0;
+			else
+        IdleFlg = 0;
+			
         return;
     }
 

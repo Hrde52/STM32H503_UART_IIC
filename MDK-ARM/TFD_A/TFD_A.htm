@@ -3,7 +3,7 @@
 <title>Static Call Graph - [TFD_A\TFD_A.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image TFD_A\TFD_A.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6230001: Last Updated: Wed Nov 12 10:58:00 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6230001: Last Updated: Fri Nov 14 15:02:58 2025
 <BR><P>
 <H3>Maximum Stack Usage =        412 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -866,6 +866,8 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_SystemReset
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessGHPTooling
+<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HandleParamWrite
+<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cargoLift_sensor_status_control
 </UL>
 
 <P><STRONG><a name="[a6]"></a>HAL_RCCEx_GetPLL1ClockFreq</STRONG> (Thumb, 408 bytes, Stack size 8 bytes, stm32h5xx_hal_rcc_ex.o(.text.HAL_RCCEx_GetPLL1ClockFreq))
@@ -1261,7 +1263,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessPacket
 </UL>
 
-<P><STRONG><a name="[d9]"></a>HandleHeartbeat</STRONG> (Thumb, 752 bytes, Stack size 24 bytes, pda_communication.o(.text.HandleHeartbeat))
+<P><STRONG><a name="[d9]"></a>HandleHeartbeat</STRONG> (Thumb, 784 bytes, Stack size 24 bytes, pda_communication.o(.text.HandleHeartbeat))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = HandleHeartbeat &rArr; HAL_UART_Transmit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_10us
@@ -1281,10 +1283,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessPacket
 </UL>
 
-<P><STRONG><a name="[db]"></a>HandleParamWrite</STRONG> (Thumb, 420 bytes, Stack size 32 bytes, pda_communication.o(.text.HandleParamWrite))
+<P><STRONG><a name="[db]"></a>HandleParamWrite</STRONG> (Thumb, 464 bytes, Stack size 32 bytes, pda_communication.o(.text.HandleParamWrite))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = HandleParamWrite &rArr; paraTable_Write &rArr; stmflash_write &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_10us
+<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;paraTable_Write
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1705,7 +1708,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
-<P><STRONG><a name="[114]"></a>UpdateDoorStateMachine</STRONG> (Thumb, 202 bytes, Stack size 0 bytes, elevatorsignalmonitor.o(.text.UpdateDoorStateMachine))
+<P><STRONG><a name="[114]"></a>UpdateDoorStateMachine</STRONG> (Thumb, 222 bytes, Stack size 0 bytes, elevatorsignalmonitor.o(.text.UpdateDoorStateMachine))
 <BR><BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;normalWork
 </UL>
 
@@ -1739,10 +1742,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;normalWork
 </UL>
 
-<P><STRONG><a name="[10c]"></a>cargoLift_sensor_status_control</STRONG> (Thumb, 204 bytes, Stack size 8 bytes, sensorapplogic.o(.text.cargoLift_sensor_status_control))
+<P><STRONG><a name="[10c]"></a>cargoLift_sensor_status_control</STRONG> (Thumb, 220 bytes, Stack size 8 bytes, sensorapplogic.o(.text.cargoLift_sensor_status_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = cargoLift_sensor_status_control &rArr; dts6012m_Stop &rArr; HAL_UART_Transmit
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dts6012m_Stop
+<BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
+<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dts6012m_Stop
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dts6012_start
 </UL>
 <BR>[Called By]<UL><LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;normalWork
@@ -1873,7 +1877,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[112]"></a>normalWork</STRONG> (Thumb, 312 bytes, Stack size 0 bytes, main.o(.text.normalWork))
+<P><STRONG><a name="[112]"></a>normalWork</STRONG> (Thumb, 346 bytes, Stack size 0 bytes, main.o(.text.normalWork))
 <BR><BR>[Stack]<UL><LI>Max Depth = 388<LI>Call Chain = normalWork &rArr; MX_USART1_UART_Init &rArr; HAL_UART_Init &rArr; HAL_UART_MspInit &rArr; HAL_DMAEx_List_InsertNode &rArr; DMA_List_FindNode
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init

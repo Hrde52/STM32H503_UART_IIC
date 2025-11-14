@@ -349,7 +349,14 @@ void normalWork()
       if (TIME_5MS_FLAG == 1)
       {
         TIME_5MS_FLAG = 0;
-        cargoLift_IN = (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_RESET) ? 1 : 0;
+				if(PARA_TABLE_USE.data.programVerison != 0x0666){
+					cargoLift_IN = (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_RESET) ? 1 : 0;
+				}
+				else{
+					cargoLift_IN =1;
+				}
+//				sensor_status = cargoLift_IN == 1 ? NormalWorking_STATUS : Idle_STATUS;
+				IdleFlg = cargoLift_IN == 1 ? 0 : 1;
         cargoLift_sensor_action_control();
       }
       if (TIME_10MS_FLAG == 1)

@@ -372,10 +372,19 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			{
 				resp_data[offset++] = 0XAA;
 			}
-			else
+			else if(sensor_status == DistanceThresholdLearning_STATUS)
+			{
+				resp_data[offset++] = 0XA5;
+			}
+			else if(sensor_status == Fault_STATUS)
 			{
 				resp_data[offset++] = 0X55;
 			}
+			else if(sensor_status == Idle_STATUS)
+			{
+				resp_data[offset++] = 0XA1;
+			}
+			
 
     // ???????
     resp_data[offset++] = 0;   // b14
@@ -956,13 +965,13 @@ void HandleParamRead(SensorProtocol *pkt)
     uint8_t returnSensorType = m_data1[0];
     // data2
     uint8_t *m_data = &m_data1[pkt->l1];
-    // ????????DATA1???1??????????
+    // DATA1???1
     uint8_t groupCount = m_data[1];
 
-    // ????????
+    // 
     SensorProtocol *resp = (SensorProtocol *)txBuffer4;
     resp->head = HEADER;
-    resp->sj = 0x2234; // ?????????
+    resp->sj = 0x2234; // 
     resp->version = 0X01;
     resp->cmd = PARAM_READ_CMD;
 
@@ -984,14 +993,14 @@ void HandleParamRead(SensorProtocol *pkt)
     offset++; // 2 ???
 
     // DATA2
-    // ????��????????PDA?????
+    // PDA
     resp_data[offset++] = 9;                  // 3
     uint8_t *resp_data2 = &resp_data[offset]; // 4
     resp_data2[0] = 1;
     WriteU32LittleEndian(&resp_data2[1], PARA_TABLE_USE.data.programVerison);
     WriteU32LittleEndian(&resp_data2[5], PARA_TABLE_USE.data.functionChioce);
 
-    //  ???DATA2??????????????44???
+    //  DATA2  44
     uint8_t *data2 = &resp_data2[9]; // ????DATA2 ????DATA1  // 10
     offset = 0;
 
@@ -1000,7 +1009,7 @@ void HandleParamRead(SensorProtocol *pkt)
     case 0x11:
         /* ???? */
         data2[offset++] = 44; // L2
-        // ????��??????????????
+        // 
         // ??????????11???????????44/4=11??
         for (int i = 2; i <= 12; i++)
         {
@@ -1051,7 +1060,7 @@ void HandleParamRead(SensorProtocol *pkt)
 
 void HandleParamWrite(SensorProtocol *pkt)
 {
-    // ????????
+		uint8_t changeF1 = 0;
     // data1
     uint8_t *m_data1 = pkt->data1;
     uint8_t returnSensorType = m_data1[0];
@@ -1061,7 +1070,6 @@ void HandleParamWrite(SensorProtocol *pkt)
     uint8_t *m_data = &m_data1[pkt->l1];
     uint8_t groupCount = m_data[1]; // ????
     // m_data[2] = L2 =6
-    // ???��???????��?��??
     uint8_t *writeData = &m_data[4]; // 2???DATA2?????��??,pkt->data1[pkt->l1]?????L2
     uint8_t writeStatus = 0;         // 0=????1=???
 
@@ -1090,6 +1098,10 @@ void HandleParamWrite(SensorProtocol *pkt)
     else if (groupIndex == 0 && internalIndex >= 1 && internalIndex <= 2)
     {
         PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
+				if(internalIndex == 2)
+				{
+					changeF1 = 1;
+				}
         writeStatus = 1;
     }
     else
@@ -1103,7 +1115,7 @@ void HandleParamWrite(SensorProtocol *pkt)
         paraTable_Write();
     }
 
-    // ????????
+    // 
     SensorProtocol *resp = (SensorProtocol *)txBuffer5;
     resp->head = HEADER;
     resp->sj = 0x2234; // ?????????
@@ -1146,5 +1158,9 @@ void HandleParamWrite(SensorProtocol *pkt)
     uint16_t total_len_resp = sizeof(SensorProtocol) - 3 + resp->length;
     RS485_PDA_TX_ENABLE();
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer5, total_len_resp, 100);
+		if(changeF1 == 1)
+		{
+			HAL_NVIC_SystemReset();
+		}
     return;
 }

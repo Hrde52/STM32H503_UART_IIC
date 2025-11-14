@@ -229,6 +229,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>toolingHandShake</ItemText>
         </Ww>
+        <Ww>
+          <count>16</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ErrData</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
