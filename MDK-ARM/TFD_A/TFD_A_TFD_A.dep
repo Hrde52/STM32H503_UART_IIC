@@ -33,7 +33,7 @@ I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_rtc_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h)(0x6805298E)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_examples\platform.h)(0x676E4A00)
 I (..\Core\Inc\sensorAppLogic.h)(0x6912B4AF)
 I (..\Core\Inc\nd06av1c_app.h)(0x67E6A9CA)
@@ -74,7 +74,7 @@ I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h)(0x6805298E)
 I (..\Core\Inc\nd06av1c_app.h)(0x67E6A9CA)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_device\inc\nd06av1c_def.h)(0x68099C9C)
 I (..\Core\Inc\PDA_Communication.h)(0x6912B471)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_examples\platform.h)(0x676E4A00)
 I (..\Core\Inc\elevatorSignalMonitor.h)(0x688981BE)
 I (..\Core\Inc\gpio.h)(0x67ECDB2C)
@@ -181,11 +181,11 @@ I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_rtc_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h)(0x6805298E)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\Core\Inc\usart.h)(0x67EB5FC8)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_examples\platform.h)(0x676E4A00)
 I (..\Core\Inc\sensorParaTable.h)(0x6913E523)
-F (..\Core\Src\PDA_Communication.c)(0x6916CD9A)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I ../Drivers/CMSIS/Include -I ../ND06AV1C_SDK_1.1.0/nd06av1c_examples -I ../ND06AV1C_SDK_1.1.0/nd06av1c_device/inc-I./RTE/_TFD_A-ID:/Software/APP/Code/KEIL5/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H503xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H503xx-o tfd_a/pda_communication.o -MMD)
+F (..\Core\Src\PDA_Communication.c)(0x6916D791)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I ../Drivers/CMSIS/Include -I ../ND06AV1C_SDK_1.1.0/nd06av1c_examples -I ../ND06AV1C_SDK_1.1.0/nd06av1c_device/inc-I./RTE/_TFD_A-ID:/Software/APP/Code/KEIL5/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H503xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H503xx-o tfd_a/pda_communication.o -MMD)
 I (..\Core\Inc\PDA_Communication.h)(0x6912B471)
 I (..\Core\Inc\main.h)(0x69016510)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal.h)(0x6805298E)
@@ -216,7 +216,7 @@ I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_rtc_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h)(0x6805298E)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\Core\Inc\usart.h)(0x67EB5FC8)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_examples\platform.h)(0x676E4A00)
 I (..\Core\Inc\elevatorSignalMonitor.h)(0x688981BE)
@@ -225,8 +225,8 @@ I (..\Core\Inc\dts6012m.h)(0x68F6FD8C)
 I (..\Core\Inc\nd06av1c_app.h)(0x67E6A9CA)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_device\inc\nd06av1c_def.h)(0x68099C9C)
 I (..\Core\Inc\sensorParaTable.h)(0x6913E523)
-F (..\Core\Src\rs485.c)(0x6912FDCB)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I ../Drivers/CMSIS/Include -I ../ND06AV1C_SDK_1.1.0/nd06av1c_examples -I ../ND06AV1C_SDK_1.1.0/nd06av1c_device/inc-I./RTE/_TFD_A-ID:/Software/APP/Code/KEIL5/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H503xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H503xx-o tfd_a/rs485.o -MMD)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+F (..\Core\Src\rs485.c)(0x6916D7D6)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc -I ../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H5xx/Include -I ../Drivers/CMSIS/Include -I ../ND06AV1C_SDK_1.1.0/nd06av1c_examples -I ../ND06AV1C_SDK_1.1.0/nd06av1c_device/inc-I./RTE/_TFD_A-ID:/Software/APP/Code/KEIL5/Arm/Packs/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H503xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H503xx-o tfd_a/rs485.o -MMD)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\Core\Inc\usart.h)(0x67EB5FC8)
 I (..\Core\Inc\main.h)(0x69016510)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal.h)(0x6805298E)
@@ -359,7 +359,7 @@ I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_rtc_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_uart_ex.h)(0x6805298E)
 I (..\Drivers\STM32H5xx_HAL_Driver\Inc\stm32h5xx_hal_exti.h)(0x6805298E)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\Core\Inc\usart.h)(0x67EB5FC8)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_examples\platform.h)(0x676E4A00)
 I (..\Core\Inc\dts6012m.h)(0x68F6FD8C)
@@ -407,7 +407,7 @@ I (..\Core\Inc\rtc.h)(0x6780C876)
 I (..\Core\Inc\usart.h)(0x67EB5FC8)
 I (..\Core\Inc\gpio.h)(0x67ECDB2C)
 I (..\Core\Inc\PDA_Communication.h)(0x6912B471)
-I (..\Core\Inc\rs485.h)(0x68F785EF)
+I (..\Core\Inc\rs485.h)(0x6916D76F)
 I (..\ND06AV1C_SDK_1.1.0\nd06av1c_examples\platform.h)(0x676E4A00)
 I (..\Core\Inc\dts6012m.h)(0x68F6FD8C)
 I (..\Core\Inc\elevatorSignalMonitor.h)(0x688981BE)

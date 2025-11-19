@@ -358,6 +358,8 @@ uint8_t isBackDoorID(uint8_t id)
     return 0;
 }
 
+
+uint8_t connectEleFlag = 0;
 uint8_t masterElevator_LevelingSignal = 0;
 uint8_t tx_data_Door[7] = {0, 0, 0, 0, 0, 0, 0};
 uint8_t rxDataEleHeander = 0;
@@ -366,6 +368,8 @@ void ProcessElevatorData(void)
     rxDataEleHeander = PARA_TABLE_USE.data.sensorAddr + 0x20;
     if (isFixBytes && rx_data_Elevator[0] == rxDataEleHeander)
     {
+			connectEleFlag = 1;
+			
         uint8_t checkXor = xor_checkSum(rx_data_Elevator, 4);
         if (checkXor == rx_data_Elevator[4])
         {
@@ -433,6 +437,8 @@ void ProcessElevatorData(void)
     }
     else
     {
+			connectEleFlag = 1;
+			
         uint8_t crcValue = CalcCRC8(rx_data_Elevator, rxSize - 1);
 
         if (crcValue == rx_data_Elevator[rxSize - 1])

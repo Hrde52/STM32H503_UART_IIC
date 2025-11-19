@@ -384,11 +384,17 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			{
 				resp_data[offset++] = 0XA1;
 			}
-			
-
-    // ???????
-    resp_data[offset++] = 0;   // b14
-    resp_data[offset++] = 1; // ?????????byte15
+		if(ERR_D == 0)
+		{			
+			resp_data[offset++] = 0;   // b14
+		}
+		else
+		{
+			;
+		}
+		if(connectEleFlag == 1){
+			resp_data[offset++] = 1; // byte15
+		}
     resp_data[offset++] = ObjectIsDetectedFlag;  //b16
     resp_data[offset++] = IO_ND06 | IO_dts6012;   //b17
     offset += 3;   //18 19 20

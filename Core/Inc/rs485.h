@@ -48,7 +48,7 @@ int RS485_PDA_Transmit(uint8_t *data, uint16_t len);
 
 
 
-
+extern uint8_t connectEleFlag;
 extern uint8_t rs485ElevatorRxCpltFlag;
 extern uint8_t rx_data_Elevator[6];
 extern uint8_t rs485PDARxCpltFlag;
