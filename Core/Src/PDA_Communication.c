@@ -110,6 +110,22 @@ void WriteU16LittleEndian(uint8_t *buf, uint32_t value)
     // buf[3] = (value >> 24) & 0xFF;
 }
 
+uint8_t find_bit_position(uint32_t hex_value) 
+{
+    if (hex_value == 0) {
+        return 0;  // 没有有效位1
+    }
+    
+    for (uint8_t i = 0; i < 8; i++) {
+        if (hex_value & 0x01) {
+            return i + 1;  // 返回位置（从1开始）
+        }
+        hex_value >>= 1;
+    }
+    return 0;
+}
+
+
 void ProcessPacket(SensorProtocol *pkt)
 {
 
@@ -281,11 +297,11 @@ void HandleHeartbeat(SensorProtocol *pkt)
     str_sensorAddr[8] = '\0';
 
     /*
-    ??????????????
+    
     */
     SensorProtocol *resp = (SensorProtocol *)txBuffer2;
     resp->head = HEADER;
-    resp->sj = 0x2234; // ????????? GenerateRandom();
+    resp->sj = 0x2234; //  GenerateRandom();
     resp->version = 0X01;
     resp->cmd = HEARTBEAT_CMD;
 
@@ -333,7 +349,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
 		{
 			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.closingDoorTime);
     }
-			offset += 2;
+		offset += 2;
 		
 		// byte 9- 10
 		if(PARA_TABLE_USE.data.functionChioce == 0x11)
@@ -347,7 +363,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
 		offset += 2;
 		
     offset += 2; // 11 12
-    // byte13????????????
+    // byte13
 //    switch (sensor_status)
 //    {
 //    case NormalWorking_STATUS:
@@ -384,25 +400,34 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			{
 				resp_data[offset++] = 0XA1;
 			}
+			else
+			{
+				resp_data[offset++] = 0X00;
+			}
+			
 		if(ERR_D == 0)
 		{			
 			resp_data[offset++] = 0;   // b14
 		}
 		else
 		{
-			;
+			resp_data[offset++] = find_bit_position(ERR_D);
 		}
+		
 		if(connectEleFlag == 1){
 			resp_data[offset++] = 1; // byte15
+		}
+		else
+		{
+			offset++; // byte15
 		}
     resp_data[offset++] = ObjectIsDetectedFlag;  //b16
     resp_data[offset++] = IO_ND06 | IO_dts6012;   //b17
     offset += 3;   //18 19 20
 
     /*
-    ????????????
-        0xAA ??????????
-        0x55 ??????
+        0xAA 
+        0x55 
     */
 		if(PARA_TABLE_USE.data.functionChioce == 0x11)
 		{
@@ -421,7 +446,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			}
 			offset += 2;  // b23 24
 
-			switch (nd06OutputEN)//b25
+			switch (nd06OutputEN)//b25 26
 			{
 			case 1:
 					resp_data[offset++] = 0XAA;   
@@ -434,7 +459,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			default:
 					break;
 			}
-			offset += 4;   // byte26 27 28 29 
+			offset += 4;   // byte27 28 29 30 
 		}
 		else
 		{
@@ -491,7 +516,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
     offset += 2;
 
     // 3.6 ????????????????16??????????4????
-    // ???????
+    // b9-b40
     uint32_t pixel_dist;
     // uint8_t step = 9;
     for (uint8_t i = 0; i < 4; i++)
@@ -504,7 +529,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
         }
     }
 
-    // ??????
+    // b41-72
     uint32_t pixel_amp;
     for (uint8_t i = 0; i < 4; i++)
     {
@@ -515,21 +540,29 @@ void HandleHeartbeat(SensorProtocol *pkt)
             offset += 2;
         }
     }
-    // DATA155 ??????????????
+    // DATA155 
+		//b73 amount of Error
+		resp_data [offset] = 1;
     offset += 8;
 
-    // DATA2?? ??????
-    resp_data[offset++] = 12;
-    offset += 11;
-    resp_data[offset] = 1;
+    // DATA5
+    //resp_data[offset++] = 12;
+		uint8_t amountError = find_bit_position(ERR_D);
+		resp_data[offset++] = amountError;
+		for(uint8_t i = 0; i < amountError; i++)
+		{
+			
+		}
+    offset += (12-find_bit_position(ERR_D));
+    //resp_data[offset] = 1;
 
     // ---------------------------
-    // 4. ????��?�A???CRC
+    // 4. CRC
     // ---------------------------
     resp->length = 135; // cmd 2 1 2 1 30 1 4 1 80 1 12 =
     resp->crc = CalcCRC16((uint8_t *)&resp->cmd, resp->length);
 
-    // ????????
+    // 
     uint16_t total_len_resp = sizeof(SensorProtocol) - 3 + resp->length;
     RS485_PDA_TX_ENABLE();
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer2, total_len_resp, 200);

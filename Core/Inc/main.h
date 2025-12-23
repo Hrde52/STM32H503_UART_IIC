@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#define DebugPrintfFlag  0  // 1����ģʽ 0 �����,�п��Ź���2 �޿��Ź�
+#define DebugPrintfFlag  0  // 1
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -60,6 +60,7 @@ extern uint8_t getIN_IO;
 extern uint8_t rxBuf[RX_BUF_SIZE];
 extern uint16_t receivedLength;
 extern uint8_t cargoLift_IN;
+extern uint16_t cargoLiftIN_LastTime;
 
 void ProcessDTSDMAData(uint8_t *data, uint16_t length);
 int8_t checkSequenceMatch(const unsigned char received[30]);

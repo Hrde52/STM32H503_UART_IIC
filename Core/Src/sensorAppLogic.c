@@ -559,8 +559,8 @@ void cargoLift_ObjectDetection(void)
     {
         timesND06Failed = 0;
         //			if(timesND06Failed++ > 10){
-        //						ND06_Reset();    // ����ND06
-        //            ND06AV1C_Init(); // ���³�ʼ��ND06
+        //						ND06_Reset();    // ND06
+        //            ND06AV1C_Init(); // ND06
         //				}
         E001 = 0;
         num_of_pixel_occluded = 0;
@@ -568,7 +568,6 @@ void cargoLift_ObjectDetection(void)
         {
             for (j = 0; j < 4; j++) // 像素左右与实际门的左右相反
             {
-                //  printf("%5d\t",dep[i*4+j]);
                 if ((nd06_data.dep[i * 4 + j] >= PARA_TABLE_USE.data.cargoLift_nd06MinChkDistance) &&
                     (nd06_data.dep[i * 4 + j] <= PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance[i * 4 + j] - PARA_TABLE_USE.data.cargoLift_nd06DistanceChkThreshold))
                 {
@@ -620,8 +619,8 @@ void cargoLift_ObjectDetection(void)
         {
             E001 = 1;
             timesND06Failed = 0;
-            ND06_Reset();    // ����ND06
-            ND06AV1C_Init(); // ���³�ʼ��ND06
+            ND06_Reset();    // ND06
+            ND06AV1C_Init(); // ND06
                              // HAL_NVIC_SystemReset();
         }
 
@@ -722,17 +721,19 @@ int sensor_self_check(void)
     {
         HAL_NVIC_SystemReset();
     }
-    else if (E002 == 1)
+    else if (E003 == 1)
     {
         if (currentDoorState == STATE_CLOSED || currentDoorState == STATE_OPENED)
         {
             if (dts6012_getDepthAndAmp(&dts6012_data) == HAL_OK)
             {
                 // nd06DistancdLearnValue  dts6012DistancdLearnValue
-                uint8_t diff_distance = dts6012DistancdLearnValue > dts6012_data.firstPeakDistance ? (dts6012DistancdLearnValue - dts6012_data.firstPeakDistance) : (dts6012_data.firstPeakDistance - dts6012DistancdLearnValue);
+                uint8_t diff_distance = dts6012DistancdLearnValue > dts6012_data.firstPeakDistance ? 
+																				(dts6012DistancdLearnValue - dts6012_data.firstPeakDistance) : 
+																				(dts6012_data.firstPeakDistance - dts6012DistancdLearnValue);
                 if (diff_distance < 50)
                 {
-                    E002 = 0;
+                    E003 = 0;
                 }
             }
         }
@@ -755,6 +756,7 @@ void cargoLift_sensor_status_control(void)
     {
         sensor_status = NotDetected_STATUS;
     }
+		/*
     else if (ERR_D != 0)
     {
         sensor_status = Fault_STATUS;
@@ -762,6 +764,7 @@ void cargoLift_sensor_status_control(void)
         //        ERR_D = 0;
         //        sensor_status = NormalWorking_STATUS;
     }
+		*/
     else if (((sensor_status == NormalWorking_STATUS) ||
               (sensor_status == Idle_STATUS)) &&
              (DistanceThresholdLearningReqFlg == 1))
@@ -791,7 +794,6 @@ void cargoLift_sensor_status_control(void)
         sensor_status = sensor_status;
     }
 
-    /*��ͣ*/
     if ((sensor_old_status != sensor_status) &&
         ((sensor_status == NormalWorking_STATUS) ||
          (sensor_status == DistanceThresholdLearning_STATUS)))
@@ -864,7 +866,7 @@ void sensor_action_control(void)
     {
         ClosingTimeLearningReqFlg = 0;
         ObjectDetection();
-        // ObjectIsDetectedFlag = 1;   //E002
+        // ObjectIsDetectedFlag = 1;   //E003
 
         detectError();
 
@@ -898,6 +900,7 @@ void sensor_action_control(void)
     }
     else
     {
+
 
         ;
     }
@@ -983,11 +986,10 @@ uint8_t detectError()
         {
             objectDetectionErrorCnt = 0;
             stopIOOutputFlag = 0;
-            E002 = 0;
+            E003 = 0;
 
             pastDoorState = STATE_CLOSING;
         }
-
         else if (currentDoorState == STATE_CLOSED && pastDoorState == STATE_CLOSING)
         {
             pastDoorState = STATE_CLOSED;
@@ -997,13 +999,12 @@ uint8_t detectError()
             if (objectDetectionErrorCnt >= 10)
             {
                 stopIOOutputFlag = 1;
-                E002 = 1;
-                // sensor_status = ;
+                E003 = 1;
             }
             else
             {
                 stopIOOutputFlag = 0;
-                E002 = 0;
+                E003 = 0;
             }
         }
     }

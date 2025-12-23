@@ -17,50 +17,50 @@
 typedef union {
     struct
     {
-        uint32_t bit0 : 1;
-        uint32_t bit1 : 1;
-        uint32_t bit2 : 1;
-        uint32_t bit3 : 1;
-        uint32_t bit4 : 1;
-        uint32_t bit5 : 1;
-        uint32_t bit6 : 1;
-        uint32_t bit7 : 1;
-        uint32_t bit8 : 1;
-        uint32_t bit9 : 1;
-        uint32_t bit10 : 1;
-        uint32_t bit11 : 1;
-        uint32_t bit12 : 1;
-        uint32_t bit13 : 1;
-        uint32_t bit14 : 1;
-        uint32_t bit15 : 1;
-        uint32_t bit16 : 1;
-        uint32_t bit17 : 1;
-        uint32_t bit18 : 1;
-        uint32_t bit19 : 1;
-        uint32_t bit20 : 1;
-        uint32_t bit21 : 1;
-        uint32_t bit22 : 1;
-        uint32_t bit23 : 1;
-        uint32_t bit24 : 1;
-        uint32_t bit25 : 1;
-        uint32_t bit26 : 1;
-        uint32_t bit27 : 1;
-        uint32_t bit28 : 1;
-        uint32_t bit29 : 1;
-        uint32_t bit30 : 1;
-        uint32_t bit31 : 1;
+        uint8_t bit0 : 1;
+        uint8_t bit1 : 1;
+        uint8_t bit2 : 1;
+        uint8_t bit3 : 1;
+        uint8_t bit4 : 1;
+        uint8_t bit5 : 1;
+        uint8_t bit6 : 1;
+        uint8_t bit7 : 1;
+        uint8_t bit8 : 1;
+        uint8_t bit9 : 1;
+        uint8_t bit10 : 1;
+        uint8_t bit11 : 1;
+        uint8_t bit12 : 1;
+        uint8_t bit13 : 1;
+        uint8_t bit14 : 1;
+        uint8_t bit15 : 1;
+        uint8_t bit16 : 1;
+        uint8_t bit17 : 1;
+        uint8_t bit18 : 1;
+        uint8_t bit19 : 1;
+        uint8_t bit20 : 1;
+        uint8_t bit21 : 1;
+        uint8_t bit22 : 1;
+        uint8_t bit23 : 1;
+        uint8_t bit24 : 1;
+        uint8_t bit25 : 1;
+        uint8_t bit26 : 1;
+        uint8_t bit27 : 1;
+        uint8_t bit28 : 1;
+        uint8_t bit29 : 1;
+        uint8_t bit30 : 1;
+        uint8_t bit31 : 1;
     } bits;
     uint32_t data;
 } ERR_DATA;
 
 extern ERR_DATA ErrData;
 
-#define	E001	ErrData.bits.bit0
-#define	E002	ErrData.bits.bit1
-#define	E003	ErrData.bits.bit2
-#define	E004	ErrData.bits.bit3
-#define	E005	ErrData.bits.bit4
-#define	E006	ErrData.bits.bit5
+#define	E001	ErrData.bits.bit0		// ND06 ERROR
+#define	E002	ErrData.bits.bit1		// DTS6012 ERROR
+#define	E003	ErrData.bits.bit2   // 0x11 detectError 
+#define	E004	ErrData.bits.bit3   // 0x11 IOERROR
+#define	E005	ErrData.bits.bit4   // 0x22 detectError 
+#define	E006	ErrData.bits.bit5   // 0x22 IOError 
 #define	E007	ErrData.bits.bit6
 #define	E008	ErrData.bits.bit7
 #define	E009	ErrData.bits.bit8
@@ -89,7 +89,7 @@ extern uint8_t regionalObjectDetected_flag_ND06;
 extern uint8_t masterElevator_OF;
 extern uint8_t stopIOOutputFlag;
 
-extern ERR_DATA ErrData;
+//extern ERR_DATA ErrData;
 
 extern uint32_t cargoLift_nd06LearnValue[16];
 extern uint32_t nd06StudyDepEven;

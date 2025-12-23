@@ -290,6 +290,7 @@ void ToolingTest()
   LEDOFF;
 }
 
+uint16_t cargoLiftIN_LastTime = 0;
 void normalWork()
 {
   MX_USART1_UART_Init();
@@ -351,6 +352,22 @@ void normalWork()
         TIME_5MS_FLAG = 0;
 				if(PARA_TABLE_USE.data.programVerison != 0x0666){
 					cargoLift_IN = (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_RESET) ? 1 : 0;
+					if(cargoLift_IN == 1)
+					{
+						cargoLiftIN_LastTime++;
+						if(cargoLiftIN_LastTime > 240) // two minutes
+						{
+							E005 = 1;
+						}
+						else
+						{
+							E005 = 0;
+						}
+					}
+					else
+					{
+						cargoLiftIN_LastTime = 0;
+					}
 				}
 				else{
 					cargoLift_IN =1;

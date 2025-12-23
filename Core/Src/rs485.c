@@ -289,7 +289,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                 iindex = 0;
             }
 
-            //  ???Header??????
+            //  ???Header
             if (rxIndex == 0 && rxDBuffPDA[0] != 0XAA) //(HEADER & 0xFF)
             {
                 rxIndex = 0;

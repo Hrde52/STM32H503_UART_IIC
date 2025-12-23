@@ -26,46 +26,14 @@ HAL_StatusTypeDef dts6012_getDepthAndAmp(DTS6012_DATA *dts6012_data)
 	if ((dts6012_DMAdata->firstPeakDistance == 0) || (dts6012_DMAdata->secondPeakDistance == 0))
 	{
 		status = HAL_ERROR;
+		E002 = 1;
 		return status;
 	}
+	E002 = 0;
 	dts6012_data->firstPeakDistance = dts6012_DMAdata->firstPeakDistance;
 	dts6012_data->firstPeakAmp = dts6012_DMAdata->firstPeakAmp;
 	dts6012_data->secondPeakDistance = dts6012_DMAdata->secondPeakDistance;
 	dts6012_data->secondPeakAmp = dts6012_DMAdata->secondPeakAmp;
-	//	if(HAL_UART_Receive(&huart3,dTS6012M_Rdata,23,3) == HAL_OK)
-	//	{
-	//		if((dTS6012M_Rdata[0]==0xA5)&&(dTS6012M_Rdata[1]==0x03)&&(dTS6012M_Rdata[2]==0x20))
-	//		{
-	//			dts6012_data->firstPeakDistance = (dTS6012M_Rdata[14] << 8) | (dTS6012M_Rdata[13]);
-	//			dts6012_data->firstPeakAmp = (dTS6012M_Rdata[18] << 8) | (dTS6012M_Rdata[17]);
-	//			dts6012_data->secondPeakDistance = (dTS6012M_Rdata[8] << 8) | (dTS6012M_Rdata[7]);
-	//			dts6012_data->secondPeakAmp = (dTS6012M_Rdata[12] << 8) | (dTS6012M_Rdata[11]);
-	//			dTS6012M_errCnt = 0;
-	// #if (DebugPrintfFlag == 1)
-	//			printf("dts6012_data.firstPeakDistance = %d\r\n", dts6012_data->firstPeakDistance);
-	//			printf("dts6012_data.firstPeakAmp = %d\r\n", dts6012_data->firstPeakAmp);
-	//			printf("dts6012_data.secondPeakDistance = %d\r\n", dts6012_data->secondPeakDistance);
-	//			printf("dts6012_data.secondPeakAmp = %d\r\n", dts6012_data->secondPeakAmp);
-	// #endif
-	//		}
-	//		else
-	//		{
-	//			if (++dTS6012M_errCnt >= 10)
-	//			{
-	//				dTS6012M_errFlag = 1;
-	//				status = HAL_ERROR;
-	//				E002 = 1;
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (++dTS6012M_errCnt >= 10)
-	//		{
-	//			dTS6012M_errFlag = 1;
-	//			status = HAL_ERROR;
-	//		}
-	//	}
 
 	return status;
 }
