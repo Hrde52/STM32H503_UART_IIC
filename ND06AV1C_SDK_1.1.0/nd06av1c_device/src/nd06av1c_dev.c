@@ -582,7 +582,7 @@ int32_t ND06AV1C_FreqCalib(ND06AV1C_Dev_t *pNxDevice)
  */
 int32_t ND06AV1C_I2CErrCallback(ND06AV1C_Dev_t *pNxDevice)
 {
-    uint32_t i = 4;
+    uint32_t i = 16;
     uint32_t rbuf = 0xffffffff;
     uint8_t data;
     extern int32_t(*I2C_ReadNBytesLib)(uint8_t, uint16_t,uint8_t *, uint8_t);
@@ -590,8 +590,9 @@ int32_t ND06AV1C_I2CErrCallback(ND06AV1C_Dev_t *pNxDevice)
     while(rbuf != 0x002F0012 && i--)
     {
         I2C_ReadNBytesLib(pNxDevice->i2c_dev_addr, ND06AV1C_REG_DEV_ID, &data, 1);
-        ND06AV1C_ReadWord(pNxDevice, ND06AV1C_REG_DEV_ID, &rbuf);
-				//I2C_ReadNBytesLib(pNxDevice->i2c_dev_addr, ND06AV1C_REG_DEV_ID, (uint8_t *)&rbuf, 4);
+			
+//        ND06AV1C_ReadWord(pNxDevice, ND06AV1C_REG_DEV_ID, &rbuf);   // 
+				I2C_ReadNBytesLib(pNxDevice->i2c_dev_addr, ND06AV1C_REG_DEV_ID, (uint8_t *)&rbuf, 4);
     }
 
     if(rbuf != 0x002F0012)

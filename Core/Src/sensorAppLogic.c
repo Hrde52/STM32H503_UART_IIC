@@ -721,7 +721,7 @@ int sensor_self_check(void)
     {
         HAL_NVIC_SystemReset();
     }
-    else if (E003 == 1)
+    else if (E007 == 1)
     {
         if (currentDoorState == STATE_CLOSED || currentDoorState == STATE_OPENED)
         {
@@ -733,12 +733,12 @@ int sensor_self_check(void)
 																				(dts6012_data.firstPeakDistance - dts6012DistancdLearnValue);
                 if (diff_distance < 50)
                 {
-                    E003 = 0;
+                    E007 = 0;
                 }
             }
         }
     }
-    else if (E004 == 1)
+    else if (E008 == 1)
     {
     }
 
@@ -888,8 +888,6 @@ void sensor_action_control(void)
             {
                 LEDOFF;
                 HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET); // IO
-                //     LEDON;
-                // HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET); // IO
             }
         }
     }
@@ -972,13 +970,13 @@ uint8_t detectError()
         // if (currentDoorState == STATE_CLOSING)
         closingNoObjectCnt = 0;
         stopIOOutputFlag = 0;
-        E004 = 0;
+        E008 = 0;
 
         if (currentDoorState == STATE_OPENING && pastDoorState == STATE_CLOSING)
         {
             objectDetectionErrorCnt = 0;
             stopIOOutputFlag = 0;
-            E003 = 0;
+            E007 = 0;
 
             pastDoorState = STATE_CLOSING;
         }
@@ -986,7 +984,7 @@ uint8_t detectError()
         {
             objectDetectionErrorCnt = 0;
             stopIOOutputFlag = 0;
-            E003 = 0;
+            E007 = 0;
 
             pastDoorState = STATE_CLOSING;
         }
@@ -999,12 +997,12 @@ uint8_t detectError()
             if (objectDetectionErrorCnt >= 10)
             {
                 stopIOOutputFlag = 1;
-                E003 = 1;
+                E007= 1;
             }
             else
             {
                 stopIOOutputFlag = 0;
-                E003 = 0;
+                E007 = 0;
             }
         }
     }
@@ -1023,14 +1021,14 @@ uint8_t detectError()
 
             if (closingNoObjectCnt >= 10)
             {
-                E004 = 1;
+                E008 = 1;
                 stopIOOutputFlag = 1;
                 closingNoObjectCnt = 0;
             }
             else
             {
                 stopIOOutputFlag = 0;
-                E004 = 0;
+                E008 = 0;
             }
         }
     }

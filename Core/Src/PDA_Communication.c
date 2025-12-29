@@ -81,12 +81,11 @@ uint8_t txBuffer5[24] = {0};
 
 unsigned short CalcCRC16(unsigned char *puchMsg, unsigned short usDataLen)
 {
-    unsigned char uchCRCHi = 0xFF; // ?CRC?????
-    unsigned char uchCRCLo = 0xFF; // ?CRC?????
-    unsigned int uIndex;           // CRC??????
+    unsigned char uchCRCHi = 0xFF; 
+    unsigned char uchCRCLo = 0xFF; 
+    unsigned int uIndex;           
     while (usDataLen--)
-    { // ???????
-
+    { 
         uIndex = uchCRCLo ^ *puchMsg++;
         uchCRCLo = uchCRCHi ^ auchCRCHi[uIndex];
         uchCRCHi = auchCRCLo[uIndex];
@@ -106,8 +105,6 @@ void WriteU16LittleEndian(uint8_t *buf, uint32_t value)
 {
     buf[0] = (value >> 0) & 0xFF;
     buf[1] = (value >> 8) & 0xFF;
-    // buf[2] = (value >> 16) & 0xFF;
-    // buf[3] = (value >> 24) & 0xFF;
 }
 
 uint8_t find_bit_position(uint32_t hex_value) 
@@ -116,15 +113,32 @@ uint8_t find_bit_position(uint32_t hex_value)
         return 0;  // 没有有效位1
     }
     
-    for (uint8_t i = 0; i < 8; i++) {
+    for (uint8_t i = 0; i < 8; i++) 
+		{
         if (hex_value & 0x01) {
             return i + 1;  // 返回位置（从1开始）
         }
         hex_value >>= 1;
     }
+		
     return 0;
 }
 
+
+uint8_t get_error_count(uint32_t hex_value) {
+    uint8_t count = 0;
+    
+    // 使用位运算快速计算1的个数
+    uint32_t value = hex_value;     // ErrData.data
+    
+    // Brian Kernighan算法
+    while (value) {
+        value &= (value - 1);
+        count++;
+    }
+    
+    return count;
+}
 
 void ProcessPacket(SensorProtocol *pkt)
 {
@@ -216,14 +230,14 @@ void HandleHandshake(SensorProtocol *pkt)
     resp_data[4] = m_minu;  // ??
     resp_data[5] = m_secs;  // ??
 
-    // ???DATA2
+    // DATA2
     uint8_t *data3 = &resp_data[resp->l1];
     uint16_t offset = 0;
     data3[offset++] = 2;
     data3[offset++] = m_sensorType111;
     data3[offset++] = 0;
 
-    // ???DATA3
+    // DATA3
     uint8_t *data2 = &resp_data[resp->l1 + 3];
     offset = 0;
     data2[offset++] = 28; // L2
@@ -246,21 +260,21 @@ void HandleHandshake(SensorProtocol *pkt)
 
     for (int i = strlen(program_version); i < 8; i++)
     {
-        data2[offset++] = ' '; // ?????
+        data2[offset++] = ' '; // 
     }
 
     uint32_t hardware_version = 0x01;
     WriteU16LittleEndian(&data2[offset], hardware_version);
     offset += 2;
 
-    // ?��ID??4??????��?????12345
+    // 
     const char *tool_fixtureID = "01N";
     memcpy(data2 + offset, tool_fixtureID, strlen(tool_fixtureID));
     offset += strlen(tool_fixtureID);
-    // ???????4????????????????????
+    // 4
     for (int i = strlen(tool_fixtureID); i < 4; i++)
     {
-        data2[offset++] = ' '; // ?????
+        data2[offset++] = ' '; // 
     }
 
     while (offset <= 27)
@@ -268,11 +282,11 @@ void HandleHandshake(SensorProtocol *pkt)
         data2[offset++] = 0;
     }
 
-    // ???????CRC
+    // CRC
     resp->length = 41; // 2 /*CMD*/ + 1 /*L1*/ + resp->l1+=2+1+2+1+28
     resp->crc = CalcCRC16((uint8_t *)&resp->cmd, resp->length);
 
-    // ????????
+    // 
     uint16_t total_len_resp = sizeof(SensorProtocol) - 3 + resp->length;
     RS485_PDA_TX_ENABLE();
     HAL_UART_Transmit(&RS485_PDA_USART, txBuffer1, total_len_resp, 100);
@@ -280,32 +294,29 @@ void HandleHandshake(SensorProtocol *pkt)
 
 void HandleHeartbeat(SensorProtocol *pkt)
 {
-    // ID.
     // data1
     uint8_t *m_data1 = pkt->data1;
     uint8_t returnSensorType = m_data1[0];
-    // m_data1[1];
 
     // 2 3-10
     // data2
     uint8_t *m_data = &m_data1[pkt->l1];
     char str_sensorAddr[9] = {0}; // char *str_sensorAddr[13];
-    uint8_t len = m_data[0];      // ???????
+    uint8_t len = m_data[0];      // 
     if (len > 8)
+		{
         len = 8;
+		}
     strncpy(str_sensorAddr, (char *)&m_data[1], 8);
     str_sensorAddr[8] = '\0';
 
-    /*
-    
-    */
     SensorProtocol *resp = (SensorProtocol *)txBuffer2;
     resp->head = HEADER;
     resp->sj = 0x2234; //  GenerateRandom();
     resp->version = 0X01;
     resp->cmd = HEARTBEAT_CMD;
 
-    // ???DATA1???��????????PDA?????
+    // DATA1PDA
     resp->l1 = 2;
     uint8_t *resp_data = resp->data1;
     uint16_t offset = 0;
@@ -331,6 +342,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance);			
 		}
     offset += 2;
+		
 		if(PARA_TABLE_USE.data.functionChioce == 0x11)
 		{
 			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.dts6012DistanceChkThreshold);
@@ -340,11 +352,13 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.cargoLift_dts6012DistanceChkThreshold);
 		}
     offset += 2;
+		
 		if(PARA_TABLE_USE.data.functionChioce == 0x11)
 		{
 			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.sensorAddr);
 		}
     offset += 2;
+		
 		if(PARA_TABLE_USE.data.functionChioce == 0x11)
 		{
 			WriteU16LittleEndian(&resp_data[offset], PARA_TABLE_USE.data.closingDoorTime);
@@ -405,13 +419,14 @@ void HandleHeartbeat(SensorProtocol *pkt)
 				resp_data[offset++] = 0X00;
 			}
 			
+			// DATA2 byte14
 		if(ERR_D == 0)
 		{			
 			resp_data[offset++] = 0;   // b14
 		}
 		else
 		{
-			resp_data[offset++] = find_bit_position(ERR_D);
+			resp_data[offset++] = get_error_count(ERR_D);
 		}
 		
 		if(connectEleFlag == 1){
@@ -493,32 +508,31 @@ void HandleHeartbeat(SensorProtocol *pkt)
 			}
 			offset += 4;   // byte26 27 28 29 			
 		}
-
+		
+		// DATA3
     resp_data[offset++] = 4;  // b30
     resp_data[offset++] = 1;	// b31
     resp_data[offset++] = 1;  // b32
     offset += 2;
 
-    // arrHeart4[0] = 80;
+    // DATA4
     resp_data[offset++] = 80;
-    // 3.5 ?????????????????2??????��?????
-    // ???1????
+
+    // b1-2
     WriteU16LittleEndian(&resp_data[offset], dts6012_data.firstPeakDistance);
     offset += 2;
-    // ???1???
+    // b3-4
     WriteU16LittleEndian(&resp_data[offset], dts6012_data.firstPeakAmp);
     offset += 2;
-    // ???2????
+    // b5-6
     WriteU16LittleEndian(&resp_data[offset], dts6012_data.secondPeakDistance);
     offset += 2;
-    // ???1???
+    // b7-b8
     WriteU16LittleEndian(&resp_data[offset], dts6012_data.secondPeakAmp);
     offset += 2;
 
-    // 3.6 ????????????????16??????????4????
-    // b9-b40
+    // b9-b40 ND06 distance
     uint32_t pixel_dist;
-    // uint8_t step = 9;
     for (uint8_t i = 0; i < 4; i++)
     {
         for (uint8_t j = 0; j < 4; j++)
@@ -529,7 +543,7 @@ void HandleHeartbeat(SensorProtocol *pkt)
         }
     }
 
-    // b41-72
+    // b41-72  ND06 amp
     uint32_t pixel_amp;
     for (uint8_t i = 0; i < 4; i++)
     {
@@ -542,24 +556,35 @@ void HandleHeartbeat(SensorProtocol *pkt)
     }
     // DATA155 
 		//b73 amount of Error
-		resp_data [offset] = 1;
+		uint8_t amountError = get_error_count(ERR_D);
+		if(amountError > 0 && (amountError <= 12))
+		{
+			resp_data [offset] = amountError;  // amountError
+		}
+		else
+		{
+			resp_data [offset] = 0;
+		}
     offset += 8;
 
     // DATA5
-    //resp_data[offset++] = 12;
-		uint8_t amountError = find_bit_position(ERR_D);
-		resp_data[offset++] = amountError;
-		for(uint8_t i = 0; i < amountError; i++)
+		uint32_t mask = 1;
+		for(uint8_t indexE = 0; indexE < 12; indexE++)
 		{
-			
+			if(ErrData.data & mask)
+			{
+				resp_data[offset++] = indexE+1;
+			}
+			mask <<= 1;
 		}
-    offset += (12-find_bit_position(ERR_D));
+		
+    offset += (12-amountError);
     //resp_data[offset] = 1;
 
     // ---------------------------
     // 4. CRC
     // ---------------------------
-    resp->length = 135; // cmd 2 1 2 1 30 1 4 1 80 1 12 =
+    resp->length = 135-1; // cmd 2 1 2 1 30 1 4 1 80 1 12 = data5没有L5
     resp->crc = CalcCRC16((uint8_t *)&resp->cmd, resp->length);
 
     // 

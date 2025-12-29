@@ -40,8 +40,8 @@ int32_t ND06AV1C_WaitDepthAndAmpBufReady(ND06AV1C_Dev_t *pNxDevice)
     ret |= ND06AV1C_ReadWord(pNxDevice, ND06AV1C_REG_DATA_VAL_REQ, &buf_valid_flag);
     if(ND06AV1C_DEPTH_DATA_VAL_MASK == (buf_valid_flag & ND06AV1C_DEPTH_DATA_VAL_MASK))
     {
-		ret = ND06AV1C_DATA_READY;
-        readDataWaitCnt = 2000;
+			ret = ND06AV1C_DATA_READY;
+      readDataWaitCnt = 2000;
     }
 
         //break;
@@ -179,48 +179,48 @@ int32_t ND06AV1C_ClearDataValidFlag(ND06AV1C_Dev_t *pNxDevice)
 uint16_t ND06AV1C_WaitDataReadyFlag = 0;
 int32_t ND06AV1C_GetDepthAndAmpData(ND06AV1C_Dev_t *pNxDevice,uint16_t *amp,uint16_t *dep)
 {
-    uint32_t ret = 0;
-    uint16_t i = 0;
-    uint16_t j = 0;
+	uint32_t ret = 0;
+	uint16_t i = 0;
+	uint16_t j = 0;
 
-    uint16_t amp_temp[4][4];
-    uint16_t dep_temp[4][4];
+	uint16_t amp_temp[4][4];
+	uint16_t dep_temp[4][4];
 
 	if(ND06AV1C_WaitDataReadyFlag == 0)
-    {
+	{
 		ret = ND06AV1C_StartMeasurement(pNxDevice);/*发送测量指令*/
-        if(ret == ND06AV1C_ERROR_NONE)
-        {
-            //printf("Measurement in progress...\r\n");
+		if(ret == ND06AV1C_ERROR_NONE)
+		{
+		  //printf("Measurement in progress...\r\n");
 			ND06AV1C_WaitDataReadyFlag = 1;
-        }
-    }
-    else // ND06AV1C_WaitDataReadyFlag == 1
+		}
+	}
+  else // ND06AV1C_WaitDataReadyFlag == 1
 	{
 	    /* 等待测量完成 */
         //test_i++;
 	    ret = ND06AV1C_WaitDepthAndAmpBufReady(pNxDevice);
-		if(ret == ND06AV1C_DATA_READY)
-        {
-            /* 读取测量数据 */
-        	ND06AV1C_ReadNWords(pNxDevice,0xA620 + ND06AV1C_REG_OFS,(uint32_t *)dep_temp,8);
-	    	ND06AV1C_ReadNWords(pNxDevice,0xA6E0 + ND06AV1C_REG_OFS,(uint32_t *)amp_temp,8);
-	    	for(i = 0;i < 4;i++)
-		    {
-		        for(j = 0;j < 4;j++)
-		        {
-		            *(amp + (3 - i) * 4 + j) = amp_temp[i][j];
-		            *(dep + (3 - i) * 4 + j) = dep_temp[i][j];
-		        }
-		    }
-           	/* 清除数据有效标志位 */
-	    	//ret |= ND06AV1C_ClearDataValidFlag(pNxDevice);
-			ND06AV1C_ClearDataValidFlag(pNxDevice);
-            ret = ND06AV1C_GET_DATA_SUCCESS;
-       		ND06AV1C_WaitDataReadyFlag = 0;
-           // printf("test_i = %d\r\n",test_i);
-          //  test_i = 0;
-        }
+			if(ret == ND06AV1C_DATA_READY)
+			{
+					/* 读取测量数据 */
+				ND06AV1C_ReadNWords(pNxDevice,0xA620 + ND06AV1C_REG_OFS,(uint32_t *)dep_temp,8);
+				ND06AV1C_ReadNWords(pNxDevice,0xA6E0 + ND06AV1C_REG_OFS,(uint32_t *)amp_temp,8);
+				for(i = 0;i < 4;i++)
+				{
+						for(j = 0;j < 4;j++)
+						{
+								*(amp + (3 - i) * 4 + j) = amp_temp[i][j];
+								*(dep + (3 - i) * 4 + j) = dep_temp[i][j];
+						}
+				 }
+					/* 清除数据有效标志位 */
+//			    ret |= ND06AV1C_ClearDataValidFlag(pNxDevice);
+					ND06AV1C_ClearDataValidFlag(pNxDevice);
+					ret = ND06AV1C_GET_DATA_SUCCESS;
+					ND06AV1C_WaitDataReadyFlag = 0;
+				 // printf("test_i = %d\r\n",test_i);
+				//  test_i = 0;
+				}
 
     }
 

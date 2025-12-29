@@ -65,7 +65,7 @@ extern ERR_DATA ErrData;
 #define	E008	ErrData.bits.bit7
 #define	E009	ErrData.bits.bit8
 #define	E0010	ErrData.bits.bit9
-#define	E0011	ErrData.bits.bit0
+#define	E0011	ErrData.bits.bit10
 #define	E0012	ErrData.bits.bit11
 #define	ERR_D	ErrData.data
 
@@ -100,10 +100,9 @@ void ClosingTimeLearning();
 void ObjectDetection(void);
 void cargoLift_ObjectDetection(void);
 
-// sensor_status = Idle_STATUS;
-void sensor_status_control(void);
+void sensor_status_control(void); // sensor_status = Idle_STATUS;
 // sensor_status: LED, ObjectDetect, Learning
-void sensor_action_control(void);
+void sensor_action_control(void);  // if (sensor_status == NormalWorking_STATUS)
 int sensor_self_check(void);
 
 void cargoLift_sensor_status_control(void);

@@ -350,26 +350,29 @@ void normalWork()
       if (TIME_5MS_FLAG == 1)
       {
         TIME_5MS_FLAG = 0;
-				if(PARA_TABLE_USE.data.programVerison != 0x0666){
+				if(PARA_TABLE_USE.data.programVerison != 0x0666)
+				{
 					cargoLift_IN = (HAL_GPIO_ReadPin(IO_IN_GPIO_Port, IO_IN_Pin) == GPIO_PIN_RESET) ? 1 : 0;
 					if(cargoLift_IN == 1)
 					{
 						cargoLiftIN_LastTime++;
-						if(cargoLiftIN_LastTime > 240) // two minutes
+						if(cargoLiftIN_LastTime >= 24000) // two minutes 2*60*1000/5 = 24000
 						{
-							E005 = 1;
+							E006 = 1;
 						}
 						else
 						{
-							E005 = 0;
+							E006 = 0;				
 						}
 					}
 					else
 					{
 						cargoLiftIN_LastTime = 0;
+						E006 = 0;
 					}
 				}
-				else{
+				else
+				{
 					cargoLift_IN =1;
 				}
 //				sensor_status = cargoLift_IN == 1 ? NormalWorking_STATUS : Idle_STATUS;
@@ -400,6 +403,7 @@ void normalWork()
   }
 }
 DTS6012_DATA dts6012_DMAdata[] = {0, 0, 0, 0};
+uint32_t e65535Times = 0;
 void ProcessDTSDMAData(uint8_t *data, uint16_t length)
 {
   if ((data[0] == 0xA5) && (data[1] == 0x03) && (data[2] == 0x20))
@@ -408,6 +412,17 @@ void ProcessDTSDMAData(uint8_t *data, uint16_t length)
     dts6012_DMAdata->firstPeakAmp = (data[18] << 8) | (data[17]);
     dts6012_DMAdata->secondPeakDistance = (data[8] << 8) | (data[7]);
     dts6012_DMAdata->secondPeakAmp = (data[12] << 8) | (data[11]);
+		
+		if((dts6012_DMAdata->firstPeakDistance == 65535) && (dts6012_DMAdata->secondPeakDistance  == 65535))
+		{
+			e65535Times++;
+			E004 =e65535Times > 1500 ? 1 : 0;
+		}
+		else
+		{
+			e65535Times = 0;
+			E004 = 0;
+		}
   }
 }
 

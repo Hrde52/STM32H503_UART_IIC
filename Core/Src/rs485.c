@@ -174,29 +174,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {
         if (isToolingTest == 1)
         {
-            //            if (rxIndexTooling == 0 && rxDBuffTooling1[0] != 0XAC)
-            //            {
-            //                rxIndexTooling = 0;
-            //                HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
-            //                return;
-            //            }
-            //            rxIndexTooling++;
-            //            if (rxIndexTooling > 9)
-            //            {
-            //                Process485Tooling(rxDBuffTooling1); // 2F
-            //                rxIndexTooling = 0;
-            //                memset(rxDBuffTooling1, 0, sizeof(rxDBuffTooling1));
-            //                HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
-            //                // HAL_Delay(100);
-            //                HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
-            //                return;
-            //            }
-
-            //            if (rxIndexTooling > 10)
-            //            {
-            //                rxIndexTooling = 0;
-            //            }
-            //            HAL_UART_Receive_IT(&huart1, &rxDBuffTooling1[rxIndexTooling], 1);
+            
         }
 
         else
@@ -363,8 +341,10 @@ uint8_t connectEleFlag = 0;
 uint8_t masterElevator_LevelingSignal = 0;
 uint8_t tx_data_Door[7] = {0, 0, 0, 0, 0, 0, 0};
 uint8_t rxDataEleHeander = 0;
+uint8_t recEleMsgFLG = 0;
 void ProcessElevatorData(void)
 {
+	recEleMsgFLG = 1;
     rxDataEleHeander = PARA_TABLE_USE.data.sensorAddr + 0x20;
     if (isFixBytes && rx_data_Elevator[0] == rxDataEleHeander)
     {
@@ -378,7 +358,6 @@ void ProcessElevatorData(void)
             // masterElevator_OF = (rx_data_Elevator[1] >> 0) & 0x01;
 
             /*
-                ?????????????
                 byte1
                     7 IO????
                     6 ??????????

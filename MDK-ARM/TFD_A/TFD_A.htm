@@ -3,7 +3,7 @@
 <title>Static Call Graph - [TFD_A\TFD_A.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image TFD_A\TFD_A.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6230001: Last Updated: Tue Dec 23 11:59:01 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6230001: Last Updated: Fri Dec 26 18:05:29 2025
 <BR><P>
 <H3>Maximum Stack Usage =        412 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -17,7 +17,6 @@ Mutually Recursive functions
  <LI><a href="#[4]">MemManage_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[4]">MemManage_Handler</a><BR>
  <LI><a href="#[2]">NMI_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[2]">NMI_Handler</a><BR>
  <LI><a href="#[6]">UsageFault_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[6]">UsageFault_Handler</a><BR>
- <LI><a href="#[f1]">ND06AV1C_I2CErrCallback</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[ee]">ND06AV1C_ReadWord</a><BR>
 </UL>
 <P>
 <H3>
@@ -479,7 +478,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
 <P><STRONG><a name="[77]"></a>ClosingTimeLearning</STRONG> (Thumb, 274 bytes, Stack size 16 bytes, sensorapplogic.o(.text.ClosingTimeLearning))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = ClosingTimeLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = ClosingTimeLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;paraTable_Write
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
@@ -491,7 +490,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
 <P><STRONG><a name="[7a]"></a>DistanceThresholdLearning</STRONG> (Thumb, 546 bytes, Stack size 40 bytes, sensorapplogic.o(.text.DistanceThresholdLearning))
-<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;paraTable_Write
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
@@ -1262,7 +1261,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ProcessPacket
 </UL>
 
-<P><STRONG><a name="[d9]"></a>HandleHeartbeat</STRONG> (Thumb, 948 bytes, Stack size 24 bytes, pda_communication.o(.text.HandleHeartbeat))
+<P><STRONG><a name="[d9]"></a>HandleHeartbeat</STRONG> (Thumb, 1080 bytes, Stack size 24 bytes, pda_communication.o(.text.HandleHeartbeat))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = HandleHeartbeat &rArr; HAL_UART_Transmit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_10us
@@ -1413,7 +1412,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
 <P><STRONG><a name="[78]"></a>ND06AV1C_GetDepthAndAmpData</STRONG> (Thumb, 482 bytes, Stack size 104 bytes, nd06av1c_data.o(.text.ND06AV1C_GetDepthAndAmpData))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadNWords
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadWord
@@ -1427,85 +1426,81 @@ Global Symbols
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DistanceThresholdLearning
 </UL>
 
-<P><STRONG><a name="[f1]"></a>ND06AV1C_I2CErrCallback</STRONG> (Thumb, 194 bytes, Stack size 32 bytes, nd06av1c_dev.o(.text.ND06AV1C_I2CErrCallback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32 + In Cycle
-<LI>Call Chain = ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
-</UL>
-<BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadWord
+<P><STRONG><a name="[f5]"></a>ND06AV1C_I2CErrCallback</STRONG> (Thumb, 102 bytes, Stack size 40 bytes, nd06av1c_dev.o(.text.ND06AV1C_I2CErrCallback))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadNWords
 <LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadWord
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WriteWord
 </UL>
 
-<P><STRONG><a name="[f2]"></a>ND06AV1C_Init</STRONG> (Thumb, 104 bytes, Stack size 16 bytes, nd06av1c_app.o(.text.ND06AV1C_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = ND06AV1C_Init &rArr; ND06AV1C_WaitDeviceBootUp &rArr; ND06AV1C_ReadWord &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<P><STRONG><a name="[f1]"></a>ND06AV1C_Init</STRONG> (Thumb, 104 bytes, Stack size 16 bytes, nd06av1c_app.o(.text.ND06AV1C_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = ND06AV1C_Init &rArr; ND06AV1C_WaitDeviceBootUp &rArr; ND06AV1C_ReadWord &rArr; ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_RegisteredPlatformApi
+<BR>[Calls]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
+<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_RegisteredPlatformApi
 </UL>
 <BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cargoLift_ObjectDetection
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ObjectDetection
 </UL>
 
-<P><STRONG><a name="[f5]"></a>ND06AV1C_InitDevice</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, nd06av1c_dev.o(.text.ND06AV1C_InitDevice), UNUSED)
+<P><STRONG><a name="[f4]"></a>ND06AV1C_InitDevice</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, nd06av1c_dev.o(.text.ND06AV1C_InitDevice), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadWord
 </UL>
 
 <P><STRONG><a name="[ef]"></a>ND06AV1C_ReadNWords</STRONG> (Thumb, 164 bytes, Stack size 32 bytes, nd06av1c_comm.o(.text.ND06AV1C_ReadNWords))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
+<BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
 </UL>
 
 <P><STRONG><a name="[ee]"></a>ND06AV1C_ReadWord</STRONG> (Thumb, 162 bytes, Stack size 32 bytes, nd06av1c_comm.o(.text.ND06AV1C_ReadWord))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ND06AV1C_ReadWord &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = ND06AV1C_ReadWord &rArr; ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
+<BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_InitDevice
-<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
+<BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_InitDevice
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
-<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
 </UL>
 
 <P><STRONG><a name="[f6]"></a>ND06AV1C_RegisteredIICApi</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, nd06av1c_comm.o(.text.ND06AV1C_RegisteredIICApi))
-<BR><BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_RegisteredPlatformApi
+<BR><BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_RegisteredPlatformApi
 </UL>
 
-<P><STRONG><a name="[f3]"></a>ND06AV1C_RegisteredPlatformApi</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, nd06av1c_dev.o(.text.ND06AV1C_RegisteredPlatformApi))
+<P><STRONG><a name="[f2]"></a>ND06AV1C_RegisteredPlatformApi</STRONG> (Thumb, 28 bytes, Stack size 16 bytes, nd06av1c_dev.o(.text.ND06AV1C_RegisteredPlatformApi))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ND06AV1C_RegisteredPlatformApi
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_RegisteredIICApi
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
 </UL>
 
-<P><STRONG><a name="[f4]"></a>ND06AV1C_WaitDeviceBootUp</STRONG> (Thumb, 422 bytes, Stack size 48 bytes, nd06av1c_dev.o(.text.ND06AV1C_WaitDeviceBootUp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = ND06AV1C_WaitDeviceBootUp &rArr; ND06AV1C_ReadWord &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<P><STRONG><a name="[f3]"></a>ND06AV1C_WaitDeviceBootUp</STRONG> (Thumb, 422 bytes, Stack size 48 bytes, nd06av1c_dev.o(.text.ND06AV1C_WaitDeviceBootUp))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = ND06AV1C_WaitDeviceBootUp &rArr; ND06AV1C_ReadWord &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_ReadWord
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WriteWord
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WriteByte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
+<BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
 </UL>
 
 <P><STRONG><a name="[f7]"></a>ND06AV1C_WriteByte</STRONG> (Thumb, 34 bytes, Stack size 16 bytes, nd06av1c_comm.o(.text.ND06AV1C_WriteByte))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = ND06AV1C_WriteByte
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
+<BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
 </UL>
 
 <P><STRONG><a name="[f0]"></a>ND06AV1C_WriteWord</STRONG> (Thumb, 142 bytes, Stack size 24 bytes, nd06av1c_comm.o(.text.ND06AV1C_WriteWord))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = ND06AV1C_WriteWord &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ND06AV1C_WriteWord &rArr; ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
+<BR>[Calls]<UL><LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
+<BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_WaitDeviceBootUp
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
 </UL>
 
@@ -1517,9 +1512,9 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
 <P><STRONG><a name="[f8]"></a>ObjectDetection</STRONG> (Thumb, 568 bytes, Stack size 16 bytes, sensorapplogic.o(.text.ObjectDetection))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = ObjectDetection &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = ObjectDetection &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
+<BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
@@ -1531,8 +1526,10 @@ Global Symbols
 <P><STRONG><a name="[9]"></a>PendSV_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32h5xx_it.o(.text.PendSV_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
-<P><STRONG><a name="[107]"></a>ProcessDTSDMAData</STRONG> (Thumb, 54 bytes, Stack size 0 bytes, main.o(.text.ProcessDTSDMAData))
-<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
+<P><STRONG><a name="[107]"></a>ProcessDTSDMAData</STRONG> (Thumb, 128 bytes, Stack size 8 bytes, main.o(.text.ProcessDTSDMAData))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = ProcessDTSDMAData
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART3_IRQHandler
 </UL>
 
 <P><STRONG><a name="[d2]"></a>ProcessElevatorData</STRONG> (Thumb, 454 bytes, Stack size 24 bytes, rs485.o(.text.ProcessElevatorData))
@@ -1546,7 +1543,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[d0]"></a>ProcessGHPTooling</STRONG> (Thumb, 320 bytes, Stack size 24 bytes, rs485.o(.text.ProcessGHPTooling))
-<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = ProcessGHPTooling &rArr; testND06 &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = ProcessGHPTooling &rArr; testND06 &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;paraTable_Reset
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;testInX
@@ -1719,9 +1716,9 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h503xx.o(RESET)
 </UL>
 <P><STRONG><a name="[108]"></a>cargoLift_ObjectDetection</STRONG> (Thumb, 648 bytes, Stack size 16 bytes, sensorapplogic.o(.text.cargoLift_ObjectDetection))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = cargoLift_ObjectDetection &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = cargoLift_ObjectDetection &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
-<BR>[Calls]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
+<BR>[Calls]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
@@ -1731,7 +1728,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[109]"></a>cargoLift_sensor_action_control</STRONG> (Thumb, 186 bytes, Stack size 8 bytes, sensorapplogic.o(.text.cargoLift_sensor_action_control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = cargoLift_sensor_action_control &rArr; cargolift_DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = cargoLift_sensor_action_control &rArr; cargolift_DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cargoLift_ObjectDetection
@@ -1751,7 +1748,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[10b]"></a>cargolift_DistanceThresholdLearning</STRONG> (Thumb, 1548 bytes, Stack size 56 bytes, sensorapplogic.o(.text.cargolift_DistanceThresholdLearning))
-<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = cargolift_DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = cargolift_DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;paraTable_Write
 <LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
@@ -1869,7 +1866,7 @@ Global Symbols
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;testInX
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;testIO
 <LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive_IT
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
+<LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_Init
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit
@@ -1877,7 +1874,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[112]"></a>normalWork</STRONG> (Thumb, 404 bytes, Stack size 0 bytes, main.o(.text.normalWork))
+<P><STRONG><a name="[112]"></a>normalWork</STRONG> (Thumb, 430 bytes, Stack size 0 bytes, main.o(.text.normalWork))
 <BR><BR>[Stack]<UL><LI>Max Depth = 388<LI>Call Chain = normalWork &rArr; MX_USART1_UART_Init &rArr; HAL_UART_Init &rArr; HAL_UART_MspInit &rArr; HAL_DMAEx_List_InsertNode &rArr; DMA_List_FindNode
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
@@ -1952,7 +1949,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[113]"></a>sensor_action_control</STRONG> (Thumb, 276 bytes, Stack size 8 bytes, sensorapplogic.o(.text.sensor_action_control))
-<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = sensor_action_control &rArr; DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = sensor_action_control &rArr; DistanceThresholdLearning &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;detectError
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
@@ -2022,7 +2019,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[fb]"></a>testND06</STRONG> (Thumb, 282 bytes, Stack size 24 bytes, toolingtest.o(.text.testND06))
-<BR><BR>[Stack]<UL><LI>Max Depth = 192<LI>Call Chain = testND06 &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback &rArr;  ND06AV1C_ReadWord (Cycle)
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = testND06 &rArr; ND06AV1C_GetDepthAndAmpData &rArr; ND06AV1C_ReadNWords &rArr; ND06AV1C_I2CErrCallback
 </UL>
 <BR>[Calls]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ND06AV1C_GetDepthAndAmpData
 </UL>

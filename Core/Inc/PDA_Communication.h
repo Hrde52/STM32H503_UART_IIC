@@ -32,6 +32,7 @@ void WriteU32LittleEndian(uint8_t *buf, uint32_t value);
 void WriteU16LittleEndian(uint8_t *buf, uint32_t value);
 
 uint8_t find_bit_position(uint32_t hex_value);
+uint8_t get_error_count(uint32_t hex_value);
 
 void ProcessPacket(SensorProtocol *pkt);
 
