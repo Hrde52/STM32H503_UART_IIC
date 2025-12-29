@@ -341,137 +341,138 @@ uint8_t connectEleFlag = 0;
 uint8_t masterElevator_LevelingSignal = 0;
 uint8_t tx_data_Door[7] = {0, 0, 0, 0, 0, 0, 0};
 uint8_t rxDataEleHeander = 0;
-uint8_t recEleMsgFLG = 0;
+//uint8_t recEleMsgFLG = 0;
+uint32_t lastReceivedELETime = 0;
 void ProcessElevatorData(void)
 {
-	recEleMsgFLG = 1;
-    rxDataEleHeander = PARA_TABLE_USE.data.sensorAddr + 0x20;
-    if (isFixBytes && rx_data_Elevator[0] == rxDataEleHeander)
-    {
-			connectEleFlag = 1;
-			
-        uint8_t checkXor = xor_checkSum(rx_data_Elevator, 4);
-        if (checkXor == rx_data_Elevator[4])
-        {
+	//recEleMsgFLG = 1;
+	lastReceivedELETime = HAL_GetTick();
+	rxDataEleHeander = PARA_TABLE_USE.data.sensorAddr + 0x20;
+	if (isFixBytes && rx_data_Elevator[0] == rxDataEleHeander)
+	{
+		connectEleFlag = 1;
+		
+		uint8_t checkXor = xor_checkSum(rx_data_Elevator, 4);
+		if (checkXor == rx_data_Elevator[4])
+		{
 
-            masterElevator_LevelingSignal = (rx_data_Elevator[1] >> 0) & 0x01; // ??????
-            // masterElevator_OF = (rx_data_Elevator[1] >> 0) & 0x01;
+				masterElevator_LevelingSignal = (rx_data_Elevator[1] >> 0) & 0x01; // ??????
+				// masterElevator_OF = (rx_data_Elevator[1] >> 0) & 0x01;
 
-            /*
-                byte1
-                    7 IO????
-                    6 ??????????
-                    5 ????
-                    4 ??
-                    3 -0 ???????????? ??00??????????01????????02??????
-                byte5: ??????
-            */
-            tx_data_Door[0] = rx_data_Elevator[0];
+				/*
+						byte1
+								7 IO????
+								6 ??????????
+								5 ????
+								4 ??
+								3 -0 ???????????? ??00??????????01????????02??????
+						byte5: ??????
+				*/
+				tx_data_Door[0] = rx_data_Elevator[0];
 
-            // ????2??¦Ë?????
-            ByteBits *byte_bits = (ByteBits *)&tx_data_Door[1]; // ??? packet[1]
+				// ????2??¦Ë?????
+				ByteBits *byte_bits = (ByteBits *)&tx_data_Door[1]; // ??? packet[1]
 
-            switch (sensor_status)
-            {
-            case NormalWorking_STATUS:
-                byte_bits->bits.bit0 = 0; // bit0=1
-                byte_bits->bits.bit1 = 0; // bit1=0
-                break;
-            case Fault_STATUS:
-                byte_bits->bits.bit0 = 1; // bit0=1
-                byte_bits->bits.bit1 = 0; // bit1=0
-                break;
-            case DistanceThresholdLearning_STATUS:
-                byte_bits->bits.bit0 = 0; // bit0=1
-                byte_bits->bits.bit1 = 1; // bit1=0
-                break;
-            case ClosingTimeLearning_STATUS:
-                byte_bits->bits.bit0 = 0; // bit0=1
-                byte_bits->bits.bit1 = 1; // bit1=0
-                break;
-            default:
-                break;
-            }
+				switch (sensor_status)
+				{
+				case NormalWorking_STATUS:
+						byte_bits->bits.bit0 = 0; // bit0=1
+						byte_bits->bits.bit1 = 0; // bit1=0
+						break;
+				case Fault_STATUS:
+						byte_bits->bits.bit0 = 1; // bit0=1
+						byte_bits->bits.bit1 = 0; // bit1=0
+						break;
+				case DistanceThresholdLearning_STATUS:
+						byte_bits->bits.bit0 = 0; // bit0=1
+						byte_bits->bits.bit1 = 1; // bit1=0
+						break;
+				case ClosingTimeLearning_STATUS:
+						byte_bits->bits.bit0 = 0; // bit0=1
+						byte_bits->bits.bit1 = 1; // bit1=0
+						break;
+				default:
+						break;
+				}
 
-            // byte_bits->bits.bit0 = 0; // bit0=1
-            // byte_bits->bits.bit1 = 0; // bit1=0
-            byte_bits->bits.bit2 = 0; // bit2=1
-            byte_bits->bits.bit3 = 0; // bit3=0
+				// byte_bits->bits.bit0 = 0; // bit0=1
+				// byte_bits->bits.bit1 = 0; // bit1=0
+				byte_bits->bits.bit2 = 0; // bit2=1
+				byte_bits->bits.bit3 = 0; // bit3=0
 
-            byte_bits->bits.bit4 = 0; // bit4=??
-            // byte_bits->bits.bit5 = fingerDetected_flag;              // bit5=
-            // byte_bits->bits.bit6 = regionalObjectDetected_flag_ND06; // bit6=
-            byte_bits->bits.bit7 = IO_dts6012 || IO_ND06; // bit7=IO
-            // byte_bits->bits.bit7 = 1; // bit7=IO
+				byte_bits->bits.bit4 = 0; // bit4=??
+				// byte_bits->bits.bit5 = fingerDetected_flag;              // bit5=
+				// byte_bits->bits.bit6 = regionalObjectDetected_flag_ND06; // bit6=
+				byte_bits->bits.bit7 = IO_dts6012 || IO_ND06; // bit7=IO
+				// byte_bits->bits.bit7 = 1; // bit7=IO
 
-            // byte5 ???????
+				// byte5 
+				tx_data_Door[6] = xor_checkSum(tx_data_Door, 6);
 
-            tx_data_Door[6] = xor_checkSum(tx_data_Door, 6);
+				delay_10us(29);
+				HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_SET);
+				delay_10us(1);
+				HAL_UART_Transmit_IT(&RS485_Elevator_USART, tx_data_Door, 7);
+		}
+	}
+	else
+	{
+		connectEleFlag = 1;
+		
+			uint8_t crcValue = CalcCRC8(rx_data_Elevator, rxSize - 1);
 
-            delay_10us(29);
-            HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_SET);
-            delay_10us(1);
-            HAL_UART_Transmit_IT(&RS485_Elevator_USART, tx_data_Door, 7);
-        }
-    }
-    else
-    {
-			connectEleFlag = 1;
-			
-        uint8_t crcValue = CalcCRC8(rx_data_Elevator, rxSize - 1);
+			if (crcValue == rx_data_Elevator[rxSize - 1])
+			{
 
-        if (crcValue == rx_data_Elevator[rxSize - 1])
-        {
+					if (isSixBytes)
+					{
+							if ((rx_data_Elevator[1] & 0X01))
+									CSpara.openDoorCmd = 1;
+							else
+									CSpara.openDoorCmd = 0;
 
-            if (isSixBytes)
-            {
-                if ((rx_data_Elevator[1] & 0X01))
-                    CSpara.openDoorCmd = 1;
-                else
-                    CSpara.openDoorCmd = 0;
+							if ((rx_data_Elevator[1] & 0X02))
+									CSpara.closeDoorCmd = 1;
+							else
+									CSpara.closeDoorCmd = 0;
+					}
+					else
+					{
+							if ((rx_data_Elevator[1] & 0X04)) // HCB
+									CSpara.LevelingSignal = 0;
+							else
+									CSpara.LevelingSignal = 1;
 
-                if ((rx_data_Elevator[1] & 0X02))
-                    CSpara.closeDoorCmd = 1;
-                else
-                    CSpara.closeDoorCmd = 0;
-            }
-            else
-            {
-                if ((rx_data_Elevator[1] & 0X04)) // HCB
-                    CSpara.LevelingSignal = 0;
-                else
-                    CSpara.LevelingSignal = 1;
+							if ((rx_data_Elevator[1] & 0X10))
+							{
+									//                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
+									//                    {
+									CSpara.OLS = 0;
+									//                    }
+									//                    else
+									//                    {
+									//                        CSpara.OLS = 1;
+									//                    }
+							}
+							else
+							{
+									//                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
+									//                    {
+									CSpara.OLS = 1;
+									//                    }
+									//                    else
+									//                    {
+									//                        CSpara.OLS = 0;
+									//                    }
+							}
 
-                if ((rx_data_Elevator[1] & 0X10))
-                {
-                    //                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
-                    //                    {
-                    CSpara.OLS = 0;
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        CSpara.OLS = 1;
-                    //                    }
-                }
-                else
-                {
-                    //                    if (PARA_TABLE_USE.data.sensorAddr != 0x51)
-                    //                    {
-                    CSpara.OLS = 1;
-                    //                    }
-                    //                    else
-                    //                    {
-                    //                        CSpara.OLS = 0;
-                    //                    }
-                }
-
-                if ((rx_data_Elevator[1] & 0X20))
-                    CSpara.CLS = 1; // ?????¦Ë???
-                else
-                    CSpara.CLS = 0;
-            }
-            isSixBytes = !isSixBytes;
-        }
+							if ((rx_data_Elevator[1] & 0X20))
+									CSpara.CLS = 1; // ?????¦Ë???
+							else
+									CSpara.CLS = 0;
+					}
+					isSixBytes = !isSixBytes;
+			}
     }
 
     headerIsFoundFlag = 0;

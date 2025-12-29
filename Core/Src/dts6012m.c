@@ -23,13 +23,13 @@ uint16_t dTS6012M_errFlag = 0;
 HAL_StatusTypeDef dts6012_getDepthAndAmp(DTS6012_DATA *dts6012_data)
 {
 	HAL_StatusTypeDef status = HAL_OK;
-	if ((dts6012_DMAdata->firstPeakDistance == 0) || (dts6012_DMAdata->secondPeakDistance == 0))
-	{
-		status = HAL_ERROR;
-		E002 = 1;
-		return status;
-	}
-	E002 = 0;
+//	if ((dts6012_DMAdata->firstPeakDistance == 0) || (dts6012_DMAdata->secondPeakDistance == 0))
+//	{
+//		status = HAL_ERROR;
+//		E002 = 1;
+//		return status;
+//	}
+//	E002 = 0;
 	dts6012_data->firstPeakDistance = dts6012_DMAdata->firstPeakDistance;
 	dts6012_data->firstPeakAmp = dts6012_DMAdata->firstPeakAmp;
 	dts6012_data->secondPeakDistance = dts6012_DMAdata->secondPeakDistance;

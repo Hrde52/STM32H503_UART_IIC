@@ -32,6 +32,8 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #define DebugPrintfFlag  0  // 1
+#define NO_DTSDATA_TIMEOUT_MS 1000  // 1s
+//#define KEEP_UNDEREXP_TIMEOUT_MS 30000  //30S
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -61,9 +63,15 @@ extern uint8_t rxBuf[RX_BUF_SIZE];
 extern uint16_t receivedLength;
 extern uint8_t cargoLift_IN;
 extern uint16_t cargoLiftIN_LastTime;
+extern uint32_t lastReceivedDTS6012Time;  
+extern uint8_t noDataDTS6012TimeoutFlag; 
+extern uint32_t lastReceivedELETime;
 
 void ProcessDTSDMAData(uint8_t *data, uint16_t length);
 int8_t checkSequenceMatch(const unsigned char received[30]);
+void CheckUART_Timeout(void);
+void CheckEleCommunication_Timeout(void);
+void CheckND06UnderEXP(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

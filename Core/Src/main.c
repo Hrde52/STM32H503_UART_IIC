@@ -80,6 +80,8 @@ uint8_t isToolingTest = 1;
 uint8_t waitToolingTimes = 0;
 uint8_t toolingHandShakeGoal[10] = {0XAC, 0x01, 0x12, 0x23, 0x34, 0x45, 0x56, 0x67, 0x78, 0x89};
 uint8_t toolingHandShake[30];
+uint32_t lastReceivedDTS6012Time = 0;  
+uint8_t noDataDTS6012TimeoutFlag = 0;  
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -153,6 +155,10 @@ int main(void)
   memset(rxBuf, 0, RX_BUF_SIZE);
   HAL_UART_Receive_DMA(&huart3, rxBuf, RX_BUF_SIZE);
   __HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);
+	
+	// init DTS6012 receive time log
+	lastReceivedDTS6012Time = HAL_GetTick();
+  noDataDTS6012TimeoutFlag = 0;
 
   HAL_GPIO_WritePin(RS485_EN_GPIO_Port, RS485_EN_Pin, GPIO_PIN_RESET);
   HAL_StatusTypeDef handShankeResult = HAL_UART_Receive(&huart1, toolingHandShake, 30, 400);
@@ -336,6 +342,9 @@ void normalWork()
       {
         TIME_1S_FLAG = 0;
         dts6012_start();
+				CheckUART_Timeout();
+				CheckEleCommunication_Timeout();
+				CheckND06UnderEXP();
 
         HAL_IWDG_Refresh(&hiwdg);
       }
@@ -389,10 +398,12 @@ void normalWork()
         TIME_100MS_FLAG = 0;
       }
       if (TIME_1S_FLAG == 1)
-      {
+			{				
         TIME_1S_FLAG = 0;
         dts6012_start();
-
+				CheckUART_Timeout();
+				CheckND06UnderEXP();
+				
         HAL_IWDG_Refresh(&hiwdg);
       }
       break;
@@ -450,6 +461,42 @@ int8_t checkSequenceMatch(const uint8_t received[30])
   return 0;
 }
 
+void CheckUART_Timeout(void)
+{
+  uint32_t currentTime = HAL_GetTick();
+  
+  if ((currentTime - lastReceivedDTS6012Time >= NO_DTSDATA_TIMEOUT_MS) && 
+      (noDataDTS6012TimeoutFlag == 0))
+  {
+    noDataDTS6012TimeoutFlag = 1;  // 
+  }
+	E003 = noDataDTS6012TimeoutFlag == 1? 1 : 0;
+}
+
+void CheckEleCommunication_Timeout(void)
+{
+	int32_t currentTime = HAL_GetTick();
+  // 40ms*5
+  if ((currentTime - lastReceivedELETime >= 2000) && 
+      (E005 == 0))
+  {
+    E005 = 1;  // 
+  }
+
+}
+
+
+void CheckND06UnderEXP(void)
+{
+	if(over30s == 1 )
+	{
+		E002 = 1;
+	}
+	else
+	{
+		E002 = 0;
+	}
+}
 /* USER CODE END 4 */
 
 /**

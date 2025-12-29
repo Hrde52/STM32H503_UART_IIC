@@ -13,6 +13,8 @@
 #include "nd06av1c_dev.h"
 #include "nd06av1c_data.h"
 #include <stdio.h>
+#include "stm32h5xx_hal.h"
+
 static uint8_t config_flag = 0;
 static uint8_t config_addr[20] = {0};
 static uint8_t config_type[20] = {0};
@@ -176,6 +178,12 @@ int32_t ND06AV1C_ClearDataValidFlag(ND06AV1C_Dev_t *pNxDevice)
  */
 //uint16_t test_i = 0;
 
+uint8_t position65300[16] = {0};
+uint8_t lastPosition65300[16] = {0};
+//uint32_t begin65300Time = 0;
+static uint32_t startTime65300[16] = {0};
+static uint8_t was65300[16] = {0};
+uint8_t over30s = 0;
 uint16_t ND06AV1C_WaitDataReadyFlag = 0;
 int32_t ND06AV1C_GetDepthAndAmpData(ND06AV1C_Dev_t *pNxDevice,uint16_t *amp,uint16_t *dep)
 {
@@ -211,6 +219,45 @@ int32_t ND06AV1C_GetDepthAndAmpData(ND06AV1C_Dev_t *pNxDevice,uint16_t *amp,uint
 						{
 								*(amp + (3 - i) * 4 + j) = amp_temp[i][j];
 								*(dep + (3 - i) * 4 + j) = dep_temp[i][j];
+							
+							// add E002 65300
+							uint8_t idx = (3 - i) * 4 + j;
+        
+							if(dep_temp[i][j] == 65300)
+							{
+									if(was65300[idx] == 0)
+									{
+											startTime65300[idx] = HAL_GetTick();
+											was65300[idx] = 1;
+									}
+									else if(HAL_GetTick() - startTime65300[idx] >= 3000)
+									{
+											over30s = 1;  // 
+									}
+							}
+							else
+							{
+									was65300[idx] = 0;
+									startTime65300[idx] = 0;
+							}
+							if(over30s == 1)
+							{
+									uint8_t anyStillOver30s = 0;
+									for(uint8_t k = 0; k < 16; k++)
+									{
+											if(was65300[k] == 1 && HAL_GetTick() - startTime65300[k] >= 30000)
+											{
+													anyStillOver30s = 1;
+													break;
+											}
+									}
+									
+									if(anyStillOver30s == 0)
+									{
+											over30s = 0;
+									}
+							}
+
 						}
 				 }
 					/* 清除数据有效标志位 */

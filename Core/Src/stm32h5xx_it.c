@@ -264,6 +264,10 @@ void USART3_IRQHandler(void)
 
     receivedLength = RX_BUF_SIZE - __HAL_DMA_GET_COUNTER(huart3.hdmarx);
 
+		// refresh DTS6012 receive time log
+    lastReceivedDTS6012Time = HAL_GetTick();
+    noDataDTS6012TimeoutFlag = 0;  // 
+		
     if (receivedLength > 0)
     {
 

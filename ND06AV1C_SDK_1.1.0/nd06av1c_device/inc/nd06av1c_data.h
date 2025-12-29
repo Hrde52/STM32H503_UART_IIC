@@ -13,6 +13,9 @@
 
 #include "nd06av1c_def.h"
  
+ 
+extern uint32_t begin65300Time;
+extern uint8_t over30s;
 /** @defgroup ND06AV1C_Data_Group ND06AV1C Data Funtions
  *  @brief ND06AV1C Data Funtions
  *  @{

@@ -121,7 +121,7 @@ extern uint16_t rxIndexTooling;
 extern uint16_t rxIndexTooling2;
 extern uint8_t rxDBuffTooling1[10];
 extern uint8_t rxDBuffTooling2[10];
-extern uint8_t recEleMsgFLG;
+//extern uint8_t recEleMsgFLG;
 
 // 新增数据处理函数
 void ProcessElevatorData(void);

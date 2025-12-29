@@ -973,7 +973,6 @@ void HandleControl(SensorProtocol *pkt)
             resp_data[62] = 0;
             WriteU16LittleEndian(&resp_data[63], PARA_TABLE_USE.data.closingDoorTime);
         }
-        //
         else if (now_ClosingTimeLearning_Flg == 1)
         {
             resp_data[61] = 0XAA;
@@ -989,6 +988,18 @@ void HandleControl(SensorProtocol *pkt)
         }
 
         break;
+				// add 2525/12/29
+		case 0X66:
+		{
+			if(ClosingTimeLearningSuccessFlg == 1 &&
+        now_ClosingTimeLearning_Flg == 0)
+			{
+				resp_data[61] = 0X66;
+				resp_data[62] = 0;
+				WriteU16LittleEndian(&resp_data[63], PARA_TABLE_USE.data.closingDoorTime);
+			}
+			break;
+		}
     case 0X55:
         if (ClosingTimeLearningReqFlg == 0)
             resp_data[61] = 0X88;

@@ -325,26 +325,23 @@ void ClosingTimeLearning()
     // 2. 只有在学习已开始时才继续
     if (learningStarted)
     {
-        closeTimeCycle++;
-        ret = ND06AV1C_GetDepthAndAmpData(&g_nd06av1c_device, (uint16_t *)nd06_data.amp, (uint16_t *)nd06_data.dep);
-        if (ret == ND06AV1C_GET_DATA_SUCCESS)
-        {
-            for (i = 2; i < 4; i++) // 1
-            {
-                for (j = 0; j < 4; j++) // 1
-                {
-                    // if (nd06_data.dep[i * 4 + j] <= PARA_TABLE_USE.data.nd06StudyDistance - PARA_TABLE_USE.data.nd06DistanceChkThreshold)
-                    if ((nd06_data.dep[i * 4 + j] >= PARA_TABLE_USE.data.nd06MinChkDistance) &&
-                        (nd06_data.dep[i * 4 + j] <= PARA_TABLE_USE.data.nd06StudyDistance - PARA_TABLE_USE.data.nd06DistanceChkThreshold))
-                    {
-                        pixelOccludedFlag = 1;
-                        learningStarted = 0;
-                        break;
-                    }
-                }
-                //                if (pixelOccludedFlag)
-                //                    break;
-            }
+			closeTimeCycle++;
+			ret = ND06AV1C_GetDepthAndAmpData(&g_nd06av1c_device, (uint16_t *)nd06_data.amp, (uint16_t *)nd06_data.dep);
+			if (ret == ND06AV1C_GET_DATA_SUCCESS)
+			{
+				for (i = 2; i < 4; i++) // 1
+				{
+						for (j = 0; j < 4; j++) // 1
+						{
+							if ((nd06_data.dep[i * 4 + j] >= PARA_TABLE_USE.data.nd06MinChkDistance) &&
+									(nd06_data.dep[i * 4 + j] <= PARA_TABLE_USE.data.nd06StudyDistance - PARA_TABLE_USE.data.nd06DistanceChkThreshold))
+							{
+									pixelOccludedFlag = 1;
+									learningStarted = 0;
+									break;
+							}
+						}
+					}
         }
     }
     // 3. 检测到像素遮挡，记录终止时间
