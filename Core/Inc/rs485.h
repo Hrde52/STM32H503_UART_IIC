@@ -82,7 +82,7 @@ typedef struct {
     uint16_t crc;    // 2 
     uint16_t cmd;    // 2 
     uint8_t l1;      // 1 
-    uint8_t data1[]; //   ,  
+    uint8_t data1[]; //    
 } SensorProtocol;
 #pragma pack(pop)
 

@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>?</Name>
+          <Name>_</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -239,6 +239,11 @@
           <count>17</count>
           <WinNumber>1</WinNumber>
           <ItemText>cargoLiftIN_LastTime</ItemText>
+        </Ww>
+        <Ww>
+          <count>18</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>global_pkt</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -407,7 +412,7 @@
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0X20000998</ItemText>
+          <ItemText>0X20000A30</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

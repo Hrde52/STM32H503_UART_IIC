@@ -4,13 +4,11 @@
 #include "main.h"
 #include "rs485.h"
 
-#define HANDSHAKE_CMD 0x01
-#define HEARTBEAT_CMD 0x02
-#define CONTROL_CMD 0x03
-#define PARAM_READ_CMD 0x04
+#define HANDSHAKE_CMD   0x01
+#define HEARTBEAT_CMD   0x02
+#define CONTROL_CMD     0x03
+#define PARAM_READ_CMD  0x04
 #define PARAM_WRITE_CMD 0x07
-
-
 
 
 // void PDA_Communicate(void);
@@ -24,6 +22,8 @@ extern uint8_t now_ClosingTimeLearning_Flg;
 extern uint8_t STOP_DistanceThresholdLearning_ReqFlg;  // PDA停止距离学习
 extern uint8_t  STOP_ClosingTimeLearningReqFlg;
 
+extern uint8_t DTS6012IOEN_PDA;
+extern uint8_t ND06IOEN_PDA;
 //extern uint8_t setResetParaFlg;
 
 uint16_t CalcCRC16(uint8_t *data, uint16_t len);
@@ -46,9 +46,6 @@ void HandleControl(SensorProtocol *pkt);
 void HandleParamRead(SensorProtocol *pkt);
 // 7参数写入处理
 void HandleParamWrite(SensorProtocol *pkt);
-
-
-
 
 
 
