@@ -769,14 +769,16 @@ void cargoLift_sensor_status_control(void)
         sensor_status = DistanceThresholdLearning_STATUS;
         // DistanceThresholdLearningReqFlg = 0;
     }
+		/*
     else if ((sensor_status == DistanceThresholdLearning_STATUS) &&
              (DistanceThresholdLearningSuccessFlg == 1))
     {
         sensor_status = NormalWorking_STATUS;
-        DistanceThresholdLearningSuccessFlg = 0;
-        dts6012DistanceThresholdLearningSuccessFlg = 0;
-        nd06DistanceThresholdLearningSuccessFlg = 0;
+//        DistanceThresholdLearningSuccessFlg = 0;
+//        dts6012DistanceThresholdLearningSuccessFlg = 0;
+//        nd06DistanceThresholdLearningSuccessFlg = 0;
     }
+		*/
     else if ((sensor_status == NormalWorking_STATUS) && (IdleFlg == 1))
     {
         sensor_status = Idle_STATUS;
@@ -839,7 +841,7 @@ void sensor_action_control(void)
     {
         // currentDoorState == STATE_CLOSED
 
-        // LEDTOGGLE;                   // LED
+        LEDTOGGLE;                   // LED
         /* if (currentDoorState != STATE_CLOSED)
          {
              HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_RESET);
@@ -895,8 +897,6 @@ void sensor_action_control(void)
     }
     else
     {
-
-
         ;
     }
 }
@@ -943,11 +943,13 @@ void cargoLift_sensor_action_control(void)
         HAL_GPIO_WritePin(IO_OUT_GPIO_Port, IO_OUT_Pin, GPIO_PIN_SET);
     }
 
-    //    else if(sensor_status == Idle_STATUS)
-    //    {
-    //		ClosingTimeLearningReqFlg = 0;
-    //		LEDOFF;
-    //    }
+    /*    
+		else if(sensor_status == Idle_STATUS)
+		{
+			ClosingTimeLearningReqFlg = 0;
+			LEDOFF;
+		}
+		*/
 }
 
 void ND06_Reset(void)
@@ -963,7 +965,6 @@ uint8_t detectError()
 {
     if (ObjectIsDetectedFlag == 1)
     {
-
         // if (currentDoorState == STATE_CLOSING)
         closingNoObjectCnt = 0;
         stopIOOutputFlag = 0;

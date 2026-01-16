@@ -790,6 +790,18 @@ void HandleControl(SensorProtocol *pkt)
         }
         break;
 		}
+		case 0x66:
+		{
+			if (sensor_status == DistanceThresholdLearning_STATUS)
+			{
+					resp_data[3] = 0X01;
+			}
+			else
+			{
+					resp_data[3] = 0X02;
+			}
+			break;
+		}
     default:
         break;
     }
@@ -895,10 +907,11 @@ void HandleControl(SensorProtocol *pkt)
     switch (set_distance_learn)
     {
     case 0XAA:
+		{
         if ((DistanceThresholdLearningReqFlg == 1) || (DistanceThresholdLearningSuccessFlg == 1))
         {
           resp_data[18] = 0X88;
-					if (DistanceThresholdLearningSuccessFlg == 1 || DistanceThresholdLearningSuccessFlg == 0)
+					if (DistanceThresholdLearningSuccessFlg == 1 /*|| DistanceThresholdLearningSuccessFlg == 0*/)
 					{
 						resp_data[19] = 0;
 						if (PARA_TABLE_USE.data.functionChioce == 0x11)
@@ -914,6 +927,10 @@ void HandleControl(SensorProtocol *pkt)
 							WriteU16LittleEndian(&resp_data[20],  PARA_TABLE_USE.data.cargoLift_dts6012StudyDistance );// dts6012DistancdLearnValue); //    
 							WriteU16LittleEndian(&resp_data[24], PARA_TABLE_USE.data.cargoLift_nd06StudyPixelDistance[9]  );//nd06StudyDepEven);
 						}
+						// sensorAppLogic 776
+						DistanceThresholdLearningSuccessFlg = 0;
+						dts6012DistanceThresholdLearningSuccessFlg = 0;
+						nd06DistanceThresholdLearningSuccessFlg = 0;
 					}				
         }
 				else
@@ -923,7 +940,7 @@ void HandleControl(SensorProtocol *pkt)
 					WriteU16LittleEndian(&resp_data[24], 0);
 				}
         break;
-
+		}
     case 0X55:
         if (DistanceThresholdLearningReqFlg == 0)
         {
@@ -1034,10 +1051,9 @@ void HandleParamRead(SensorProtocol *pkt)
     uint8_t returnSensorType = m_data1[0];
     // data2
     uint8_t *m_data = &m_data1[pkt->l1];
-    // DATA1???1
     uint8_t groupCount = m_data[1];
 
-    // 
+    // SENSOR -> PDA
     SensorProtocol *resp = (SensorProtocol *)txBuffer4;
     resp->head = HEADER;
     resp->sj = 0x2234; // 
@@ -1048,8 +1064,6 @@ void HandleParamRead(SensorProtocol *pkt)
     uint8_t *resp_data = resp->data1;
     uint16_t offset = 0;
 
-    // resp_data[offset++] = 2; // 0
-
     // DATA1
     if (returnSensorType != m_sensorType111)
     {
@@ -1059,7 +1073,7 @@ void HandleParamRead(SensorProtocol *pkt)
     {
         resp_data[offset++] = m_sensorType111;
     }
-    offset++; // 2 ???
+    offset++; // 2 
 
     // DATA2
     // PDA
@@ -1077,7 +1091,6 @@ void HandleParamRead(SensorProtocol *pkt)
     {
     case 0x11:
         data2[offset++] = 44; // L2
-        // 
         // 11 44/4=11
         for (int i = 2; i <= 12; i++)
         {
@@ -1097,7 +1110,7 @@ void HandleParamRead(SensorProtocol *pkt)
         data2[offset++] = 92; // L2
 
         // 14-36 = 23  23*4=92
-        for (int i = 13; i <= 35; i++)
+        for (int i = 13; i <= 35; i++)   //  20260107 CHANGE 
         {
             uint32_t param = PARA_TABLE_USE.DATE[i];
 
@@ -1132,14 +1145,14 @@ void HandleParamWrite(SensorProtocol *pkt)
 
     // data2
     uint8_t *m_data = &m_data1[pkt->l1];
-    uint8_t groupCount = m_data[1]; // ????
+    uint8_t groupCount = m_data[1]; // 
     // m_data[2] = L2 =6
-    uint8_t *writeData = &m_data[4]; // 2???DATA2, pkt->data1[pkt->l1]?????L2
+    uint8_t *writeData = &m_data[4]; // DATA2, pkt->data1[pkt->l1]  L2
     uint8_t writeStatus = 0;         // 
 
     // F0.11 = 300
-    uint8_t groupIndex = writeData[0];    // ????11
-    uint8_t internalIndex = writeData[1]; // ??????0
+    uint8_t groupIndex = writeData[0];    //  11
+    uint8_t internalIndex = writeData[1]; //  0
     uint32_t funcValue = (writeData[5] << 24) | (writeData[4] << 16) |
                          (writeData[3] << 8) | writeData[2];
 
@@ -1154,19 +1167,24 @@ void HandleParamWrite(SensorProtocol *pkt)
         PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
     }
 
-    else if (PARA_TABLE_USE.data.functionChioce == 0x22 && groupIndex == 0 && internalIndex >= 14 && internalIndex <= 36)
+    else if (PARA_TABLE_USE.data.functionChioce == 0x22 && groupIndex == 0 && internalIndex >= 3 /*14*/ && internalIndex <= 25/*36*/)
     {
-        PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
+			// 3-> 13
+        PARA_TABLE_USE.DATE[internalIndex + 10] = funcValue;
         writeStatus = 1;
     }
-    else if (groupIndex == 0 && internalIndex >= 2 && internalIndex <= 2)  // 1程序版本不可以修改
+    else if (groupIndex == 0 && internalIndex == 2)  // 1程序版本不可以修改
     {
-        PARA_TABLE_USE.DATE[internalIndex - 1] = funcValue;
-				if(internalIndex == 2)
-				{
-					changeF1 = 1;
-				}
+			if(funcValue == 0x11 || funcValue == 0x22)  // 只可以写入11或22
+			{
+        PARA_TABLE_USE.data.functionChioce = funcValue;
+				changeF1 = 1;
         writeStatus = 1;
+			}
+			else
+			{
+				writeStatus = 0;
+			}
     }
     else
     {

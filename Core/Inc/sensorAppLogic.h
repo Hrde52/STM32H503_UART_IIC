@@ -81,6 +81,8 @@ extern uint32_t closeTimeCnt;
 extern int8_t nd06AV1C_objDetectFlag;
 extern uint8_t DistanceThresholdLearningFailed_Flg;
 extern uint8_t ClosingTimeLearningFailed_Flg;
+extern uint32_t dts6012DistanceThresholdLearningSuccessFlg;
+extern uint32_t nd06DistanceThresholdLearningSuccessFlg;
 
 extern uint8_t IO_dts6012;
 extern uint8_t IO_ND06;
